@@ -23,12 +23,12 @@ class Medication extends Model
     public function sales()
     {
         return $this->belongsToMany(Sale::class, 'medication_sale')
-            ->withPivot('units', 'sub_total');
+            ->withPivot('quantity', 'sub_total');
     }
 
     public function orders(): BelongsToMany
     {
         return $this->belongsToMany(ProductionOrder::class, 'medication_production_order')
-            ->withPivot('units', 'sub_total');
+            ->withPivot('quantity', 'sub_total');
     }
 }

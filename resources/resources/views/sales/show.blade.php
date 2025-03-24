@@ -24,7 +24,7 @@
                 </div>
                 <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Medication: {{$sale->medication->name}}</p>
                 <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Batch: {{$sale->production_order->batch}}</p>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Units: {{$sale->units}}</p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Quantity: {{$sale->quantity}}</p>
                 <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Subtotal: U$D {{$sale->sub_total}}</p>
 
 

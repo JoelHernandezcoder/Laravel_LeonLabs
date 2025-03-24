@@ -31,16 +31,37 @@
                         <ul>
                             <div class="flex justify-between">
                                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 mt-10 ml-8">
-                                    Medicación: {{ $medication->name }}
+                                    Medication: {{ $medication->name }}
                                 </h2>
                                 <img class="p-2 rounded-sm" src="{{$medication->photo}}" alt="" width="100" height="60" class="ml-3">
                             </div>
-                            <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Precio: {{ $medication->price }}</p>
-                            <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Unidades: {{ $medication->pivot->units }}</p>
-                            <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Subtotal: {{ $medication->pivot->sub_total }}</p>
-                            @foreach($medication->orders as $order)
-                                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Lote: {{ $order->batch }}</p>
-                            @endforeach
+                            <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Price: U$D {{ $medication->price }}</p>
+                            <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Quantity: {{ $medication->pivot->quantity }} units</p>
+                            <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Subtotal: U$D {{ $medication->pivot->sub_total }}</p>
+
+                            <!-- Mostrar los lotes asociados -->
+                            @if($medication->orders->count() > 1)
+                                <p class="dark:text-white text-lg mx-8 mt-4 font-bold text-blue-800">Batches of Medication's Sale:</p>
+                                <div class="ml-8 mt-2 space-y-2">
+                                    @foreach($medication->orders as $order)
+                                        <p class="dark:text-white text-lg text-blue-800">
+                                            • {{ $order->batch }}
+                                            @if(isset($order->pivot->quantity))
+                                                | {{ $order->pivot->quantity }} units
+                                            @endif
+                                        </p>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p class="dark:text-white text-lg mx-8 mt-4 font-bold text-blue-800">Batches of Medication's Sale:</p>
+                                <div class="ml-8 mt-2 space-y-2">
+                                    @foreach($medication->orders as $order)
+                                        <p class="dark:text-white text-lg text-blue-800">
+                                            • {{ $order->batch }}
+                                        </p>
+                                    @endforeach
+                                </div>
+                            @endif
                         </ul>
                     </div>
                 @endforeach
@@ -49,7 +70,8 @@
 
                 <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Agreed Date: {{$sale->agreed_date}}</p>
                 <x-forms.divider/>
-
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Total: U$D {{$sale->calculateTotal()}}</p>
+                <x-forms.divider/>
                 <div class="ml-4">
                     <x-action-button href="/sales">Sale's List</x-action-button>
                 </div>

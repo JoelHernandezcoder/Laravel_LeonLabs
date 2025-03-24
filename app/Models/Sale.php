@@ -31,7 +31,7 @@ class Sale extends Model
     public function medications(): BelongsToMany
     {
         return $this->belongsToMany(Medication::class, 'medication_sale')
-            ->withPivot('units', 'sub_total');
+            ->withPivot('quantity', 'sub_total');
     }
 
     public function calculateTotal()

@@ -30,7 +30,6 @@ class SaleController extends Controller
                 ->join('production_orders as po', 'po.id', '=', 'mpo.production_order_id')
                 ->where('po.sale_id', $sale->id)
                 ->get();
-
             return $medication;
         });
 
@@ -70,7 +69,7 @@ class SaleController extends Controller
             'client_id' => ['required', 'exists:clients,id'],
             'medications' => ['required', 'array'],
             'medications.*.id' => ['required', 'exists:medications'],
-            'medications.*.units' => ['required', 'integer'],
+            'medications.*.quantity' => ['required', 'integer'],
             'medications.*.sub_total' => ['required', 'numeric'],
             'agreed_date' => ['required', 'date'],
         ]);
@@ -83,7 +82,7 @@ class SaleController extends Controller
 
         foreach ($attributes['medications'] as $medicationData) {
             $medication = Medication::find($medicationData['id']);
-            $units = $medicationData['units'];
+            $quantity = $medicationData['quantity'];
             $subTotal = $medicationData['sub_total'];
 
             $year = now()->year % 100;
@@ -102,13 +101,13 @@ class SaleController extends Controller
             ]);
 
             $productionOrder->medications()->attach($medication->id, [
-                'units' => $units,
+                'quantity' => $quantity,
                 'sub_total' => $subTotal,
                 'sale_id' => $sale->id,
             ]);
 
             $sale->medications()->attach($medication->id, [
-                'units' => $units,
+                'quantity' => $quantity,
                 'sub_total' => $subTotal,
                 'sale_id' => $sale->id,
             ]);

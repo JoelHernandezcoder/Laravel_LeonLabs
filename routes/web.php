@@ -6,6 +6,7 @@ use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SupplyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -42,6 +43,12 @@ Route::get('/sales/create', [SaleController::class, 'create']);
 Route::get('/sales/{sale}', [SaleController::class, 'show']);
 Route::delete('/sales/{sale}', [SaleController::class, 'destroy']);
 Route::post('/sales', [SaleController::class, 'store']);
+
+Route::get('/supplies', [SupplyController::class, 'index']);
+Route::get('/supplies/create', [SupplyController::class, 'create']);
+Route::get('/supplies/{supply}', [SupplyController::class, 'show']);
+Route::delete('/supplies/{supply}', [SupplyController::class, 'destroy']);
+Route::post('/supplies', [SupplyController::class, 'store']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

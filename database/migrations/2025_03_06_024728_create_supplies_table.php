@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',50)->unique();
             $table->decimal('stock', 15);
+            $table->string('unit_code',5);
             $table->decimal('price',10);
             $table->string('supplier',50);
             $table->date('entry_date');

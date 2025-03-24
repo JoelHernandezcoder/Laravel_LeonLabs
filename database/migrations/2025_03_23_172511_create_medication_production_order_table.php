@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('medication_id');
             $table->unsignedBigInteger('production_order_id');
             $table->unsignedBigInteger('sale_id');  // Asegúrate de que esta columna esté presente
-            $table->integer('units');
+            $table->integer('quantity');
             $table->decimal('sub_total', 10, 2);
             $table->timestamps();
 

@@ -19,7 +19,7 @@ class ProductionOrder extends Model
     public function medications()
     {
         return $this->belongsToMany(Medication::class, 'medication_production_order')
-            ->withPivot('units', 'sub_total');
+            ->withPivot('quantity', 'sub_total');
     }
 
     public function sale(): BelongsTo

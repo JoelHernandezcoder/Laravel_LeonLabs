@@ -10,6 +10,7 @@
 
 <x-forms.field :$label :$name>
     <select {{ $attributes->merge($defaults) }}>
+        <option class="bg-gray-100" value=""> </option>
         @foreach ($options as $value => $text)
             <option class="bg-gray-100" value="{{ $value }}">{{ $text }}</option>
         @endforeach
