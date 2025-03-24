@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductionOrder extends Model
@@ -13,9 +12,19 @@ class ProductionOrder extends Model
     /** @use HasFactory<\Database\Factories\ProductionOrderFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'batch',
+        'sale_id'
+    ];
+    public function medications()
+    {
+        return $this->belongsToMany(Medication::class, 'medication_production_order')
+            ->withPivot('units', 'sub_total');
+    }
+
     public function sale(): BelongsTo
     {
-        return $this->belongsTo(Sale::class);
+        return $this->belongsTo(Sale::class,'sale_id');
     }
 
     public function line(): BelongsTo

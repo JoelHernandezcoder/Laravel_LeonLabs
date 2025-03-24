@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Medication extends Model
@@ -19,13 +20,15 @@ class Medication extends Model
         'photo'
     ];
 
-    public function sale(): BelongsTo
+    public function sales()
     {
-        return $this->belongsTo(Sale::class);
+        return $this->belongsToMany(Sale::class, 'medication_sale')
+            ->withPivot('units', 'sub_total');
     }
 
-    public function batch(): HasMany
+    public function orders(): BelongsToMany
     {
-        return $this->HasMany(ProductionOrder::class,'batch');
+        return $this->belongsToMany(ProductionOrder::class, 'medication_production_order')
+            ->withPivot('units', 'sub_total');
     }
 }

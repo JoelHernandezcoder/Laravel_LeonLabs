@@ -33,8 +33,9 @@
             {{ $slot }}
         </div>
 
-        <!-- Sidebar -->
-        <x-sidebar></x-sidebar>
+        <aside class="bg-blue-500/10 dark:bg-gray-800 min-h-screen">
+            <x-sidebar></x-sidebar>
+        </aside>
     </main>
 </div>
 </body>

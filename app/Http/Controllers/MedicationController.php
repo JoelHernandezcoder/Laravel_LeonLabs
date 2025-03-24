@@ -11,7 +11,7 @@ class MedicationController extends Controller
 
     public function index()
     {
-        $medications = Medication::with('sale')->get();
+        $medications = Medication::with('sales')->get();
         return view('medications.index', [
             'medications' => $medications,
         ]);

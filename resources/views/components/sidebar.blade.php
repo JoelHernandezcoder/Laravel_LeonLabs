@@ -1,4 +1,4 @@
-<div class="sidebar h-screen w-full lg:w-64 bg-blue-500/10 dark:bg-gray-800 p-4 space-y-2 font-medium lg:ml-auto lg:static mt-4 lg:mt-0">
+<div class="sidebar h-screen w-full lg:w-64 p-4 space-y-2 font-medium lg:ml-auto lg:static mt-4 lg:mt-0">
     <ul>
         <li>
             <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
