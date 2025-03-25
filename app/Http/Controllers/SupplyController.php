@@ -14,36 +14,38 @@ class SupplyController extends Controller
             'supplies' => $supplies,
         ]);
     }
-    public function show(Medication $medication)
+    public function show(Supply $supply)
     {
-        return view('medications.show', [
-            'medication' => $medication,
-            'sale' =>$medication->sale,
+        return view('supplies.show', [
+            'supply' => $supply,
+            'medication' =>$supply->medication,
         ]);
     }
 
     public function create()
     {
-        return view('medications.create');
+        return view('supplies.create');
     }
 
     public function store(Request $request)
     {
         $attributes = $request->validate([
             'name' => ['required'],
+            'stock' => ['required', 'numeric'],
             'price' => ['required', 'numeric'],
-            'description' => ['required'],
-            'photo' => ['nullable'],
+            'supplier' => ['required'],
+            'entry_date' => ['required', 'date'],
+            'expiration_date' => ['required', 'date'],
         ]);
 
-        $medication = Medication::create($attributes);
+        $supply = Supply::create($attributes);
 
-        return redirect('/medications');
+        return redirect('/supplies');
     }
-    public function destroy(Medication $medication)
+    public function destroy(Supply $supply)
     {
-        $medication->delete();
-        return redirect('/medications');
+        $supply->delete();
+        return redirect('/supplies');
     }
 
 }

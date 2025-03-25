@@ -31,4 +31,11 @@ class Medication extends Model
         return $this->belongsToMany(ProductionOrder::class, 'medication_production_order')
             ->withPivot('quantity', 'sub_total');
     }
+
+    public function supplies()
+    {
+        return $this->belongsToMany(Supply::class, 'medication_supply')
+            ->withPivot('quantity_per_unit');
+    }
+
 }

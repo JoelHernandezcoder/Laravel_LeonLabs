@@ -10,13 +10,21 @@
                 <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">List</h1>
                 <ul class="flex flex-col">
                     @foreach ($supplies ?? [] as $supply)
-                        <a href="/medications/{{$supply->id}}" class="dark:text-white/50 mx-8 mt-4 text-blue-800">{{ $supply->id }}). {{ $supply->name }}</a>
+                        <li class="group flex items-center dark:text-white/50 mx-8 mt-4">
+                            <a href="/supplies/{{$supply->id}}" class="text-blue-800">{{ $supply->id }}). {{ $supply->name }}</a>
+                            <span class="flex-1 border-b-2 border-dotted border-gray-400 mx-2"></span>
+                            @if($supply->expiration_date < now() )
+                                <x-danger-span>Expired</x-danger-span>
+                            @else
+                                <x-success-span>Correct</x-success-span>
+                            @endif
+                        </li>
                     @endforeach
                 </ul>
                 <x-forms.divider/>
-{{--                <div class="mx-4">--}}
-{{--                    {{ $medications->links() }}--}}
-{{--                </div>--}}
+                <div class="mx-4">
+                    {{ $supplies->links() }}
+                </div>
                 <div class="text-center mb-8">
                     <x-action-button href="/supplies/create" >Create Supply</x-action-button>
                 </div>

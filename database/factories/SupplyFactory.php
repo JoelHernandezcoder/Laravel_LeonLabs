@@ -17,7 +17,13 @@ class SupplyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->unique()->word(),
+            'stock' => $this->faker->randomFloat(2, 1, 1000),
+            'unit_code' => $this->faker->randomElement(['kg', 'lt', 'm']),
+            'price' => $this->faker->randomFloat(2, 1, 200),
+            'supplier' =>  $this->faker->company(),
+            'entry_date' => $this->faker->dateTimeThisMonth(),
+            'expiration_date' =>  $this->faker->dateTimeBetween('now','1 year'),
         ];
     }
 }
