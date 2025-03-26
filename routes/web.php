@@ -3,6 +3,8 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\MedicationController;
+use App\Http\Controllers\ProductionCalendarController;
+use App\Http\Controllers\ProductionLineController;
 use App\Http\Controllers\ProductionOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
@@ -51,8 +53,11 @@ Route::get('/supplies/{supply}', [SupplyController::class, 'show']);
 Route::delete('/supplies/{supply}', [SupplyController::class, 'destroy']);
 Route::post('/supplies', [SupplyController::class, 'store']);
 
-Route::get('/production', [ProductionOrderController::class, 'index']);
+Route::get('/production', [ProductionCalendarController::class, 'index'])->name('calendar');;
 Route::get('/production/{prod_order}', [ProductionOrderController::class, 'show']);
+
+Route::get('/lines', [ProductionLineController::class, 'index']);
+Route::get('/lines/{line}', [ProductionLineController::class, 'show']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

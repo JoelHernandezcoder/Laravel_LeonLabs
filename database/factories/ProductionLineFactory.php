@@ -17,7 +17,7 @@ class ProductionLineFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+
         ];
     }
 }

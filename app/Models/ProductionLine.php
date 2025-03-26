@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductionLine extends Model
@@ -12,13 +12,13 @@ class ProductionLine extends Model
     /** @use HasFactory<\Database\Factories\ProductionLineFactory> */
     use HasFactory;
 
-    public function order(): BelongsTo
+    public function orders(): HasMany
     {
-        return $this->belongsTo(ProductionOrder::class);
+        return $this->hasMany(ProductionOrder::class, 'production_line_id');
     }
 
-    public function employees(): HasMany
+    public function employees(): BelongsToMany
     {
-        return $this->HasMany(Employee::class);
+        return $this->belongsToMany(Employee::class, 'production_line_employee');
     }
 }

@@ -15,6 +15,6 @@ class Employee extends Model
 
     public function line(): BelongsTo
     {
-        return $this->belongsTo(ProductionLine::class);
+        return $this->belongsTo(ProductionLine::class, 'production_line_id');
     }
 }

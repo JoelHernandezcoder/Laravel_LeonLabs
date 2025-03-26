@@ -14,8 +14,10 @@ class ProductionOrder extends Model
 
     protected $fillable = [
         'batch',
-        'sale_id'
+        'sale_id',
+        'production_line_id',
     ];
+
     public function medications()
     {
         return $this->belongsToMany(Medication::class, 'medication_production_order')
@@ -24,21 +26,22 @@ class ProductionOrder extends Model
 
     public function sale(): BelongsTo
     {
-        return $this->belongsTo(Sale::class,'sale_id');
+        return $this->belongsTo(Sale::class, 'sale_id');
     }
 
     public function line(): BelongsTo
     {
-        return $this->belongsTo(ProductionLine::class);
+        return $this->belongsTo(ProductionLine::class, 'production_line_id');
     }
 
-    public function services()
+    public function services(): HasMany
     {
         return $this->hasMany(Service::class);
     }
 
-    public function supply_orders(): HasMany
+    public function supplyOrders(): HasMany
     {
         return $this->hasMany(SupplyOrder::class);
     }
 }
+
