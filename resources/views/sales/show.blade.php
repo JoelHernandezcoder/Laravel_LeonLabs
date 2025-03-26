@@ -39,7 +39,6 @@
                             <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Quantity: {{ $medication->pivot->quantity }} units</p>
                             <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Subtotal: U$D {{ $medication->pivot->sub_total }}</p>
 
-                            <!-- Mostrar los lotes asociados -->
                             @if($medication->orders->count() > 1)
                                 <p class="dark:text-white text-lg mx-8 mt-4 font-bold text-blue-800">Batches of Medication's Sale:</p>
                                 <div class="ml-8 mt-2 space-y-2">
@@ -67,10 +66,11 @@
                 @endforeach
 
                 <x-forms.divider/>
-
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Agreed Date: {{$sale->agreed_date}}</p>
+                <h2 class="font-semibold text-center text-xl text-gray-800 dark:text-gray-200 mt-10 ml-8">
+                    Total: U$D {{$sale->total}}
+                </h2>
                 <x-forms.divider/>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Total: U$D {{$sale->calculateTotal()}}</p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Agreed Date: {{$sale->agreed_date}}</p>
                 <x-forms.divider/>
                 <div class="ml-4">
                     <x-action-button href="/sales">Sale's List</x-action-button>

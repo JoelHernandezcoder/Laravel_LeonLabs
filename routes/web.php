@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\MedicationController;
+use App\Http\Controllers\ProductionOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ServiceController;
@@ -49,6 +50,9 @@ Route::get('/supplies/create', [SupplyController::class, 'create']);
 Route::get('/supplies/{supply}', [SupplyController::class, 'show']);
 Route::delete('/supplies/{supply}', [SupplyController::class, 'destroy']);
 Route::post('/supplies', [SupplyController::class, 'store']);
+
+Route::get('/production', [ProductionOrderController::class, 'index']);
+Route::get('/production/{prod_order}', [ProductionOrderController::class, 'show']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -17,10 +17,16 @@
 
                 <x-forms.divider/>
 
-                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">Used in the Production of Medication:</h1>
+                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">Used in the Production of:</h1>
 
                 <ul>
-                    <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">{{ $medication}}</p>
+                    @foreach($supply->medications ?? [] as $medication)
+                        <div class="dark:bg-gray-700 bg-gray-100 mx-5 p-4 rounded-md mb-4">
+                            <li class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                                <a href="/medications/{{ $medication->id}}"><strong>• Medication:</strong> {{ $medication->name }} </a>
+                            </li>
+                        </div>
+                    @endforeach
                 </ul>
 
                 <x-forms.divider/>

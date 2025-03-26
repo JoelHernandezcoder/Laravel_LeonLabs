@@ -12,7 +12,7 @@ class MedicationController extends Controller
 
     public function index()
     {
-        $medications = Medication::with('sales')->get();
+        $medications = Medication::paginate(10);
         return view('medications.index', [
             'medications' => $medications,
         ]);

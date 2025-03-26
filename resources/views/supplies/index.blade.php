@@ -6,21 +6,30 @@
     </x-slot>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">List</h1>
-                <ul class="flex flex-col">
-                    @foreach ($supplies ?? [] as $supply)
-                        <li class="group flex items-center dark:text-white/50 mx-8 mt-4">
-                            <a href="/supplies/{{$supply->id}}" class="text-blue-800">{{ $supply->id }}). {{ $supply->name }}</a>
-                            <span class="flex-1 border-b-2 border-dotted border-gray-400 mx-2"></span>
-                            @if($supply->expiration_date < now() )
-                                <x-danger-span>Expired</x-danger-span>
-                            @else
-                                <x-success-span>Correct</x-success-span>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-4">
+                <h1 class="dark:text-white mx-8 my-8 font-bold text-xl">List</h1>
+                <table class="mx-8 w-full text-left border-collapse">
+                    <thead>
+                    <tr class="border-b">
+                        <th class="p-2 dark:text-white">ID</th>
+                        <th class="p-2 dark:text-white">Name</th>
+                        <th class="p-2 dark:text-white">Stock</th>
+                        <th class="p-2 dark:text-white">Expiration Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($supplies ?? [] as $supply)
+                            <tr class="border-b">
+                                <td class="p-2">
+                                    <a href="/supplies/{{$supply->id}}" class="text-blue-800">{{ $supply->id }}</a>
+                                </td>
+                                <td class="p-2 dark:text-white">{{ $supply->name }}</td>
+                                <td class="p-2 dark:text-white">{{ $supply->stock }}</td>
+                                <td class="p-2 dark:text-white">{{ $supply->expiration_date }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
                 <x-forms.divider/>
                 <div class="mx-4">
                     {{ $supplies->links() }}

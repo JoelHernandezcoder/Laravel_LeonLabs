@@ -70,20 +70,24 @@ class SaleController extends Controller
             'medications' => ['required', 'array'],
             'medications.*.id' => ['required', 'exists:medications'],
             'medications.*.quantity' => ['required', 'integer'],
-            'medications.*.sub_total' => ['required', 'numeric'],
             'agreed_date' => ['required', 'date'],
         ]);
 
         $sale = Sale::create([
             'client_id' => $attributes['client_id'],
-            'total' => 0,
             'agreed_date' => $attributes['agreed_date'],
+            'total' => 0,
         ]);
+
+        $total = 0;
 
         foreach ($attributes['medications'] as $medicationData) {
             $medication = Medication::find($medicationData['id']);
             $quantity = $medicationData['quantity'];
-            $subTotal = $medicationData['sub_total'];
+
+            $subTotal = $medication->price * $quantity;
+
+            $total += $subTotal;
 
             $year = now()->year % 100;
             $batchPrefix = strtolower(str_replace(' ', '', $medication->name));
@@ -92,7 +96,6 @@ class SaleController extends Controller
                 ->first();
             $batchNumber = $latestOrder ? intval(substr($latestOrder->batch, strlen($batchPrefix) + 1, 3)) + 1 : 1;
             $batchNumber = str_pad($batchNumber, 3, '0', STR_PAD_LEFT);
-
             $batch = "{$batchPrefix}-{$batchNumber}-{$year}";
 
             $productionOrder = ProductionOrder::create([
@@ -113,10 +116,11 @@ class SaleController extends Controller
             ]);
         }
 
-        $sale->updateTotal();
+        $sale->update(['total' => $total]);
 
         return redirect('/sales');
     }
+
 
 
     public function destroy(Sale $sale)

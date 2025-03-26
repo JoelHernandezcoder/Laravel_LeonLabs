@@ -6,13 +6,28 @@
     </x-slot>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">List</h1>
-                <ul class="flex flex-col">
-                    @foreach ($employees ?? [] as $employee)
-                        <a href="/employees/{{$employee->id}}" class="dark:text-white/50 mx-8 mt-4 text-blue-800">{{$employee->id}}). {{ $employee->first_name }} {{ $employee->last_name }}</a>
-                    @endforeach
-                </ul>
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-4">
+                <h1 class="dark:text-white font-bold text-xl mb-4">List</h1>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                    <tr class="border-b">
+                        <th class="p-2 dark:text-white">ID</th>
+                        <th class="p-2 dark:text-white">Full Name</th>
+                        <th class="p-2 dark:text-white">Salary U$D</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($employees ?? [] as $employee)
+                            <tr class="border-b">
+                                <td class="p-2">
+                                    <a href="/employees/{{ $employee->id }}" class="text-blue-800">{{ $employee->id }}</a>
+                                </td>
+                                <td class="p-2 dark:text-white">{{ $employee->first_name }} {{ $employee->last_name }}</td>
+                                <td class="p-2 dark:text-white">{{ $employee->salary }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
                 <x-forms.divider/>
                 <div class="mx-4">
                     {{ $employees->links() }}

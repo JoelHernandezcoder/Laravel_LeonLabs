@@ -6,13 +6,26 @@
     </x-slot>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">List</h1>
-                <ul class="flex flex-col">
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-4">
+                <h1 class="dark:text-white font-bold text-xl mb-4">List</h1>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                    <tr class="border-b">
+                        <th class="p-2 dark:text-white">ID</th>
+                        <th class="p-2 dark:text-white">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     @foreach ($clients ?? [] as $client)
-                        <a href="/clients/{{$client->id}}" class="dark:text-white/50 mx-8 mt-4 text-blue-800">{{ $client->id }}). {{ $client->name }}</a>
+                        <tr class="border-b">
+                            <td class="p-2">
+                                <a href="/clients/{{ $client->id }}" class="text-blue-800">{{ $client->id }}</a>
+                            </td>
+                            <td class="p-2 dark:text-white">{{ $client->name }}</td>
+                        </tr>
                     @endforeach
-                </ul>
+                    </tbody>
+                </table>
                 <x-forms.divider/>
                 <div class="mx-4">
                     {{ $clients->links() }}

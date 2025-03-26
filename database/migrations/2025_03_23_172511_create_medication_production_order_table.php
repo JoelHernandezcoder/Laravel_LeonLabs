@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('medication_id');
             $table->unsignedBigInteger('production_order_id');
-            $table->unsignedBigInteger('sale_id');  // Asegúrate de que esta columna esté presente
+            $table->unsignedBigInteger('sale_id');
             $table->integer('quantity');
-            $table->decimal('sub_total', 10, 2);
+            $table->decimal('sub_total', 20);
             $table->timestamps();
 
             $table->foreign('medication_id')->references('id')->on('medications')->onDelete('cascade');

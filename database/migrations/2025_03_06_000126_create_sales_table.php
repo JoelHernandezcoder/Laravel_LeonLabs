@@ -11,7 +11,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('clients');
-            $table->decimal('total', 10, 2)->default(0);
+            $table->decimal('total', 20)->default(0);
             $table->date('agreed_date');
             $table->boolean('is_delivered')->default(false);
             $table->timestamps();
@@ -22,7 +22,7 @@ class CreateSalesTable extends Migration
             $table->foreignId('sale_id')->constrained('sales');
             $table->foreignId('medication_id')->constrained('medications');
             $table->integer('quantity');
-            $table->decimal('sub_total', 10, 2);
+            $table->decimal('sub_total', 20);
             $table->timestamps();
         });
     }

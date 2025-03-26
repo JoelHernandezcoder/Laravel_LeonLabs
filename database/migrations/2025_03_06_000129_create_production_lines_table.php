@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('production_lines', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
-            $table->foreignId('production_order_id')->constrained('production_orders')->onUpdate('cascade');
-            $table->foreignId('employer_id')->constrained('employees')->onUpdate('cascade');
         });
     }
 

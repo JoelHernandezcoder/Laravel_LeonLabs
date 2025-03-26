@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Medications
+            Production
         </h2>
     </x-slot>
     <div class="py-4">
@@ -12,31 +12,36 @@
                     <thead>
                     <tr class="border-b">
                         <th class="p-2 dark:text-white">ID</th>
-                        <th class="p-2 dark:text-white">Medication</th>
-                        <th class="p-2 dark:text-white">Price U$D</th>
+                        <th class="p-2 dark:text-white">Batch</th>
+                        <th class="p-2 dark:text-white">State</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach ($medications ?? [] as $medication)
+                    @foreach ($prod_orders ?? [] as $prod_order)
                         <tr class="border-b">
                             <td class="p-2">
-                                <a href="/medications/{{ $medication->id }}" class="text-blue-800">{{ $medication->id }}</a>
+                                <a href="/production/{{ $prod_order->id }}" class="text-blue-800">{{ $prod_order->id }}</a>
                             </td>
-                            <td class="p-2 dark:text-white">{{ $medication->name }}</td>
-                            <td class="p-2 dark:text-white">{{ $medication->price }}</td>
+                            <td class="p-2 dark:text-white">{{ $prod_order->batch }}</td>
+                            @if( !$prod_order->state)
+                                <td class="p-2 dark:text-white">Not Started</td>
+                            @elseif($prod_order->state == 1)
+                                <td class="p-2 dark:text-white">In Progress</td>
+                            @elseif($prod_order->state == 2)
+                                <td class="p-2 dark:text-white">Completed</td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
                 <x-forms.divider/>
                 <div class="mx-4">
-                    {{ $medications->links() }}
+                    {{ $prod_orders->links() }}
                 </div>
                 <div class="text-center mb-8">
-                    <x-action-button href="/medications/create" >Create Medication</x-action-button>
+                    <x-action-button href="/production/lines" >Production Lines</x-action-button>
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
-

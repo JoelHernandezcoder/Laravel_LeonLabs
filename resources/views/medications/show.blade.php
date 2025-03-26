@@ -13,20 +13,28 @@
                 <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">{{$medication->description}}</p>
 
                 <x-forms.divider/>
-                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">Supplies</h1>
+                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">Production Supply List (Per Dose)</h1>
                 <ul>
                     @foreach($supplies as $supply)
-                        <li class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
-                            <strong>{{ $supply->name }}:</strong> {{ $supply->pivot->quantity_per_unit }} units
-                        </li>
+                        <div class="dark:bg-gray-700 bg-gray-100 mx-5 p-4 rounded-md mb-4">
+                            <li class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                                <a href="/supplies/{{ $supply->id}}"><strong>• Supply:</strong> {{ $supply->name }} | <strong>Quantity per unit: </strong> {{ $supply->pivot->quantity_per_unit }} {{$supply->unit_code}}</a>
+                            </li>
+                        </div>
                     @endforeach
                 </ul>
 
                 <x-forms.divider/>
 
-                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">Sales</h1>
+                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">{{$medication->name}}'s Sales</h1>
                 <ul>
-                    <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">{{ $medication->sale}}</p>
+                    @foreach($medication->sales ?? [] as $sale)
+                        <div class="dark:bg-gray-700 bg-gray-100 mx-5 p-4 rounded-md mb-4">
+                            <li class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                                <a href="/sales/{{ $sale->id}}"><strong>• Id:</strong> {{ $sale->id}} | Client:</strong> {{ $sale->client->name }} |<strong> Quantity:</strong>  {{ $sale->pivot->quantity }} units | <strong> Total:</strong>  {{ $sale->total }} U$D</strong></a>
+                            </li>
+                        </div>
+                    @endforeach
                 </ul>
 
                 <x-forms.divider/>
