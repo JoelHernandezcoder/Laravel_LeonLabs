@@ -14,8 +14,10 @@ class CreateProductionOrdersTable extends Migration
             $table->unsignedBigInteger('sale_id')->nullable();
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->unsignedBigInteger('production_line_id')->nullable();
-            $table->foreign('production_line_id')->references('id')->on('production_lines')->onDelete('restrict'); // Cambio a restrict
+            $table->foreign('production_line_id')->references('id')->on('production_lines')->onDelete('restrict');
             $table->tinyInteger('state')->default(0);
+            $table->date('end_date');
+            $table->date('start_date');
             $table->timestamps();
         });
     }

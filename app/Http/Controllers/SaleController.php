@@ -70,6 +70,7 @@ class SaleController extends Controller
             'medications' => ['required', 'array'],
             'medications.*.id' => ['required', 'exists:medications'],
             'medications.*.quantity' => ['required', 'integer'],
+            'start_date'=> ['required', 'date'],
             'agreed_date' => ['required', 'date'],
         ]);
 
@@ -101,6 +102,8 @@ class SaleController extends Controller
             $productionOrder = ProductionOrder::create([
                 'batch' => $batch,
                 'sale_id' => $sale->id,
+                'start_date'=>$attributes['start_date'],
+                'end_date'=>$sale->agreed_date,
             ]);
 
             $productionOrder->medications()->attach($medication->id, [
@@ -120,7 +123,6 @@ class SaleController extends Controller
 
         return redirect('/sales');
     }
-
 
 
     public function destroy(Sale $sale)

@@ -5,18 +5,15 @@
         </h2>
     </x-slot>
     <div class="py-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-4">
                 <h1 class="dark:text-white font-bold text-xl mb-4">List</h1>
                     @foreach ($lines ?? [] as $line)
-                    <div class="dark:bg-gray-700 text-center bg-gray-100 mx-5 p-4 rounded-md mb-4">
-                        <li class="dark:text-white font-bold text-xl mx-8 mt-4 text-blue-800">
-                            <a href="/sales/{{ $line->id}}">{{$line->name}}</a>
-                        </li>
+                    <div class="text-center bg-gray-100 mx-5 p-4 rounded-md">
+                            <x-action-button class="w-48" href="/sales/{{ $line->id}}">{{$line->name}}</x-action-button>
                     </div>
                     @endforeach
-                <x-forms.divider/>
-                <div class="text-center mb-8">
+                <div class="mt-4">
                     <x-action-button href="/production" >Production Orders</x-action-button>
                 </div>
             </div>

@@ -72,7 +72,7 @@
                         />
 
                         <x-forms.divider/>
-
+                        <x-forms.input label="Start Date" name="start_date" type="date" required />
                         <x-forms.input label="Agreed Date" name="agreed_date" type="date" required />
 
                         <div class="text-center py-4">
