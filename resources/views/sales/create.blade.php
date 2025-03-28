@@ -8,6 +8,20 @@
     <div class="py-4">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+
+                <!-- Mostrar errores de validación -->
+                @if ($errors->any())
+                    <div class="mb-4">
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+
                 <x-forms.form method="POST" action="/sales">
                     <div class="space-y-6">
 
@@ -72,8 +86,10 @@
                         />
 
                         <x-forms.divider/>
-                        <x-forms.input label="Start Date" name="start_date" type="date" required />
-                        <x-forms.input label="Agreed Date" name="agreed_date" type="date" required />
+
+                        <!-- Campos de fechas -->
+                        <x-forms.input label="Start Date" name="start_date" type="date" required id="start_date" />
+                        <x-forms.input label="Agreed Date" name="agreed_date" type="date" required id="agreed_date" />
 
                         <div class="text-center py-4">
                             <x-forms.button type="submit">Create Sale</x-forms.button>
@@ -96,7 +112,6 @@
         const clientSelect = document.getElementById('client-select');
         const allMedications = @json($medications);
 
-        // Función para habilitar/deshabilitar campos
         function toggleMedicationFields(enable) {
             document.querySelectorAll('.medication-select, .quantity-input, .remove-medication-btn').forEach(el => {
                 el.disabled = !enable;
@@ -105,21 +120,19 @@
             addMedicationBtn.classList.toggle('disabled:opacity-50', !enable);
         }
 
-        // Función para resetear medicamentos
         function resetMedications() {
             const rows = medicationsSection.querySelectorAll('.medication-row');
             for (let i = 1; i < rows.length; i++) {
                 rows[i].remove();
             }
-
             const firstRow = rows[0];
             firstRow.querySelector('.medication-select').value = '';
             firstRow.querySelector('.quantity-input').value = '';
             firstRow.querySelector('.subtotal-input').value = '';
             updateTotal();
+            updateMedicationSelectOptions();
         }
 
-        // Función para actualizar subtotal
         function updateSubTotal(inputElement) {
             const row = inputElement.closest('.medication-row');
             const quantity = row.querySelector('.quantity-input').value;
@@ -129,14 +142,12 @@
             const price = prices[medicationId];
             if (price && quantity) {
                 subTotalInput.value = (price * quantity).toFixed(2);
-                updateTotal();
             } else {
                 subTotalInput.value = '';
-                updateTotal();
             }
+            updateTotal();
         }
 
-        // Función para calcular total
         function updateTotal() {
             let total = 0;
             document.querySelectorAll('.subtotal-input').forEach(input => {
@@ -145,7 +156,20 @@
             totalAmountElement.value = total.toFixed(2);
         }
 
-        // Evento para agregar nueva fila (usando x-forms)
+        function updateMedicationSelectOptions() {
+            const selects = document.querySelectorAll('.medication-select');
+            const selectedValues = Array.from(selects).map(select => select.value).filter(val => val !== '');
+            selects.forEach(select => {
+                Array.from(select.options).forEach(option => {
+                    if (option.value !== '' && selectedValues.includes(option.value) && select.value !== option.value) {
+                        option.disabled = true;
+                    } else {
+                        option.disabled = false;
+                    }
+                });
+            });
+        }
+
         addMedicationBtn.addEventListener('click', function() {
             if (clientSelect.value === '') return;
 
@@ -153,7 +177,6 @@
             const newRow = document.createElement('div');
             newRow.classList.add('medication-row');
 
-            // Crear elementos usando el mismo formato que x-forms
             newRow.innerHTML = `
                 <div class="flex space-x-4">
                     <x-forms.select
@@ -189,26 +212,23 @@
 
             medicationsSection.appendChild(newRow);
 
-            // Convertir el HTML string a elementos DOM reales
             const template = document.createElement('template');
             template.innerHTML = newRow.innerHTML.trim();
             const realElements = template.content.firstChild;
-
-            // Reemplazar el placeholder con los elementos reales
             newRow.innerHTML = '';
             newRow.appendChild(realElements);
 
-            // Agregar eventos
             newRow.querySelector('.quantity-input').addEventListener('input', function() {
                 updateSubTotal(this);
             });
-
             newRow.querySelector('.medication-select').addEventListener('change', function() {
                 updateSubTotal(this);
+                updateMedicationSelectOptions();
             });
+
+            updateMedicationSelectOptions();
         });
 
-        // Resto de eventos (se mantienen igual)
         clientSelect.addEventListener('change', function() {
             const clientSelected = this.value !== '';
             toggleMedicationFields(clientSelected);
@@ -220,18 +240,29 @@
                 medicationsSection.querySelectorAll('.medication-row').length > 1) {
                 event.target.closest('.medication-row').remove();
                 updateTotal();
+                updateMedicationSelectOptions();
             }
         });
 
-        // Inicialización
         document.querySelector('.quantity-input')?.addEventListener('input', function() {
             updateSubTotal(this);
         });
-
         document.querySelector('.medication-select')?.addEventListener('change', function() {
             updateSubTotal(this);
+            updateMedicationSelectOptions();
         });
 
         toggleMedicationFields(false);
+
+        // validation of dates
+        const startDateInput = document.getElementById('start_date');
+        const agreedDateInput = document.getElementById('agreed_date');
+
+        startDateInput.addEventListener('change', function() {
+            agreedDateInput.min = this.value;
+            if (agreedDateInput.value && agreedDateInput.value < this.value) {
+                agreedDateInput.value = this.value;
+            }
+        });
     </script>
 </x-app-layout>

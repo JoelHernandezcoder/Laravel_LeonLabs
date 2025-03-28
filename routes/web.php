@@ -53,7 +53,7 @@ Route::get('/supplies/{supply}', [SupplyController::class, 'show']);
 Route::delete('/supplies/{supply}', [SupplyController::class, 'destroy']);
 Route::post('/supplies', [SupplyController::class, 'store']);
 
-Route::get('/production', [ProductionCalendarController::class, 'index'])->name('production');;
+Route::get('/production/{month?}/{year?}', [ProductionCalendarController::class, 'index'])->name('production');
 Route::get('/production/{prod_order}', [ProductionOrderController::class, 'show']);
 
 Route::get('/lines', [ProductionLineController::class, 'index']);

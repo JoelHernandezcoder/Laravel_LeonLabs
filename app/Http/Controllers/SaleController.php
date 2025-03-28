@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Medication;
 use App\Models\ProductionOrder;
+use App\Models\ProductionLine;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 
@@ -14,14 +15,11 @@ class SaleController extends Controller
     {
         $sales = Sale::paginate(10);
 
-        $sales->each(function ($sale) {
-            $sale->time_remaining = $this->calculateTimeRemaining($sale);
-        });
-
         return view('sales.index', [
             'sales' => $sales,
         ]);
     }
+
     public function show(Sale $sale)
     {
         $medicationsWithOrders = $sale->medications->map(function ($medication) use ($sale) {
@@ -63,16 +61,31 @@ class SaleController extends Controller
             'orders' => $orders,
         ]);
     }
+
     public function store(Request $request)
     {
         $attributes = $request->validate([
             'client_id' => ['required', 'exists:clients,id'],
             'medications' => ['required', 'array'],
-            'medications.*.id' => ['required', 'exists:medications'],
+            'medications.*.id' => ['required', 'exists:medications,id'],
             'medications.*.quantity' => ['required', 'integer'],
-            'start_date'=> ['required', 'date'],
+            'start_date' => ['required', 'date'],
             'agreed_date' => ['required', 'date'],
         ]);
+
+        // validate product's lines
+        $newOrders = count($attributes['medications']);
+        $maxOrders = ProductionLine::count();
+        $overlapCount = ProductionOrder::where('start_date', '<=', $attributes['agreed_date'])
+            ->where('end_date', '>=', $attributes['start_date'])
+            ->count();
+
+        if ($overlapCount + $newOrders > $maxOrders) {
+            return back()->withErrors([
+                'date' => 'There are not enough production lines available for the selected date range.'
+            ])->withInput();
+        }
+
 
         $sale = Sale::create([
             'client_id' => $attributes['client_id'],
@@ -85,9 +98,7 @@ class SaleController extends Controller
         foreach ($attributes['medications'] as $medicationData) {
             $medication = Medication::find($medicationData['id']);
             $quantity = $medicationData['quantity'];
-
             $subTotal = $medication->price * $quantity;
-
             $total += $subTotal;
 
             $year = now()->year % 100;
@@ -102,8 +113,8 @@ class SaleController extends Controller
             $productionOrder = ProductionOrder::create([
                 'batch' => $batch,
                 'sale_id' => $sale->id,
-                'start_date'=>$attributes['start_date'],
-                'end_date'=>$sale->agreed_date,
+                'start_date' => $attributes['start_date'],
+                'end_date' => $sale->agreed_date,
             ]);
 
             $productionOrder->medications()->attach($medication->id, [
@@ -124,42 +135,9 @@ class SaleController extends Controller
         return redirect('/sales');
     }
 
-
     public function destroy(Sale $sale)
     {
         $sale->delete();
         return redirect()->route('sales.index');
-    }
-
-    private function calculateTimeRemaining($sale)
-    {
-        if (is_null($sale->created_at) || is_null($sale->agreed_date)) {
-            return [
-                'diffInDays' => 0,
-                'hours' => 0,
-                'minutes' => 0,
-                'status' => 'warning',
-            ];
-        }
-
-        $createdAt = $sale->created_at;
-        $agreedDate = $sale->agreed_date;
-
-        $diffInDays = floor($createdAt->diffInDays($agreedDate));
-        $hours = $createdAt->diff($agreedDate)->h;
-        $minutes = $createdAt->diff($agreedDate)->i;
-
-        if ($createdAt->diffInSeconds($agreedDate) < 0) {
-            $status = 'danger';
-        } else {
-            $status = 'warning';
-        }
-
-        return [
-            'diffInDays' => $diffInDays,
-            'hours' => $hours,
-            'minutes' => $minutes,
-            'status' => $status,
-        ];
     }
 }

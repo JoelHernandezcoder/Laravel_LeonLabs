@@ -8,61 +8,59 @@ use Illuminate\Http\Request;
 
 class ProductionCalendarController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $month = null, $year = null)
     {
-        $currentMonth = $request->get('month', Carbon::now()->month);
-        $currentYear = $request->get('year', Carbon::now()->year);
+        $currentMonth = $this->validateMonth($month ?? $request->input('month', now()->month));
+        $currentYear = (int)($year ?? $request->input('year', now()->year));
 
-        $prodOrders = ProductionOrder::whereYear('start_date', $currentYear)
-            ->whereMonth('start_date', $currentMonth)
-            ->orWhereMonth('end_date', $currentMonth)
+        $orders = $this->getOrdersForMonth($currentYear, $currentMonth);
+
+        return view('production.calendar', [
+            'prodOrders' => $orders,
+            'currentMonth' => $currentMonth,
+            'currentYear' => $currentYear,
+            'datesInRange' => $this->getActiveProductionDates($orders, $currentYear, $currentMonth)
+        ]);
+    }
+
+    private function validateMonth($month): int
+    {
+        $month = (int)$month;
+        return ($month >= 1 && $month <= 12) ? $month : now()->month;
+    }
+
+    private function getOrdersForMonth(int $year, int $month)
+    {
+        $monthStart = Carbon::create($year, $month, 1)->startOfMonth();
+        $monthEnd = Carbon::create($year, $month, 1)->endOfMonth();
+
+        return ProductionOrder::where('start_date', '<=', $monthEnd)
+            ->where(function($query) use ($monthStart) {
+                $query->where('end_date', '>=', $monthStart)
+                    ->orWhereNull('end_date');
+            })
             ->get();
+    }
 
-        $orderColors = [];
-        foreach ($prodOrders as $prodOrder) {
-            $orderColors[$prodOrder->id] = $this->generateOrderColor($prodOrder);
-        }
+    private function getActiveProductionDates($orders, $year, $month)
+    {
+        $dates = [];
+        $monthStart = Carbon::create($year, $month, 1)->startOfMonth();
+        $monthEnd = Carbon::create($year, $month, 1)->endOfMonth();
 
-        $firstDayOfMonth = Carbon::create($currentYear, $currentMonth, 1);
-        $daysInMonth = $firstDayOfMonth->daysInMonth;
+        foreach ($orders as $order) {
+            $start = Carbon::parse($order->start_date);
+            $end = $order->end_date ? Carbon::parse($order->end_date) : now();
 
-        $days = [];
-        for ($i = 1; $i <= $daysInMonth; $i++) {
-            $days[] = Carbon::create($currentYear, $currentMonth, $i);
-        }
+            $current = max($start, $monthStart);
+            $endDate = min($end, $monthEnd);
 
-        $datesInRange = [];
-
-
-        foreach ($prodOrders as $prodOrder) {
-            $startDate = Carbon::parse($prodOrder->start_date);
-            $endDate = $prodOrder->sale ? Carbon::parse($prodOrder->end_date) : Carbon::now();
-
-            if ($startDate->month == $currentMonth || ($endDate && $endDate->month == $currentMonth)) {
-                $datesInRange = array_merge($datesInRange, $this->getDaysInRange($startDate, $endDate));
+            while ($current <= $endDate) {
+                $dates[] = $current->toDateString();
+                $current->addDay();
             }
         }
 
-        return view('production.calendar', compact('days', 'prodOrders', 'currentMonth', 'currentYear', 'datesInRange', 'orderColors'));
-    }
-
-    private function getDaysInRange(Carbon $startDate, Carbon $endDate)
-    {
-        $dates = [];
-        $currentDate = $startDate->copy();
-
-        while ($currentDate->lte($endDate)) {
-            $dates[] = $currentDate->toDateString();
-            $currentDate->addDay();
-        }
-
-        return $dates;
-    }
-
-    private function generateOrderColor($prodOrder)
-    {
-        $colors = ['bg-red-200', 'bg-green-200', 'bg-yellow-200', 'bg-orange-200'];
-
-        return $colors[$prodOrder->id % count($colors)];
+        return array_unique($dates);
     }
 }
