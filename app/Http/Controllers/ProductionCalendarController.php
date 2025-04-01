@@ -63,4 +63,17 @@ class ProductionCalendarController extends Controller
 
         return array_unique($dates);
     }
+
+    public function updateState(Request $request, $orderId)
+    {
+        $validated = $request->validate([
+            'state' => 'required|in:0,1,2'
+        ]);
+
+        $order = ProductionOrder::findOrFail($orderId);
+        $order->state = $validated['state'];
+        $order->save();
+
+        return redirect('/production');
+    }
 }

@@ -4,35 +4,58 @@
             {{ $employee->first_name }} {{ $employee->last_name }}
         </h2>
     </x-slot>
+
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Gender: {{$employee->gender}}</p>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Address: {{$employee->address}}</p>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Meal: {{$employee->meal_option}}</p>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Role: {{$employee->role}}</p>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Seniority: {{$employee->seniority}}</p>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Salary: ${{$employee->salary}}</p>
-                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Start Date: {{$employee->start_date}}</p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                    {{ __('messages.Gender', [], session('lang','en')) }}: {{ $employee->gender }}
+                </p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                    {{ __('messages.Address', [], session('lang','en')) }}: {{ $employee->address }}
+                </p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                    {{ __('messages.Meal', [], session('lang','en')) }}: {{ $employee->meal_option }}
+                </p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                    {{ __('messages.Role', [], session('lang','en')) }}: {{ $employee->role }}
+                </p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                    {{ __('messages.Seniority', [], session('lang','en')) }}: {{ $employee->seniority }}
+                </p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                    {{ __('messages.Salary', [], session('lang','en')) }}: ${{ $employee->salary }}
+                </p>
+                <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                    {{ __('messages.Start Date', [], session('lang','en')) }}: {{ $employee->start_date }}
+                </p>
 
-                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">Production Line</h1>
+                <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">
+                    {{ __('messages.Production Line', [], session('lang','en')) }}
+                </h1>
                 <ul>
-                        <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">{{ $employee->line}}</p>
+                    <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                        {{ $employee->line }}
+                    </p>
                 </ul>
 
                 <x-forms.divider/>
 
                 <div class="ml-4">
-                    <x-action-button href="/employees">Employees's List</x-action-button>
+                    <x-action-button href="/employees">
+                        {{ __("messages.Employees' List", [], session('lang','en')) }}
+                    </x-action-button>
                 </div>
 
                 <x-forms.divider/>
 
-                <form method="POST" action="{{$employee->id}}">
+                <form method="POST" action="{{ $employee->id }}">
                     @csrf
                     @method('DELETE')
                     <div class="text-end mx-4 mb-4">
-                        <x-danger-button>Delete Employee</x-danger-button>
+                        <x-danger-button>
+                            {{ __('messages.Delete Employee', [], session('lang','en')) }}
+                        </x-danger-button>
                     </div>
                 </form>
             </div>

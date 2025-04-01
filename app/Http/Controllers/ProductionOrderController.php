@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class ProductionOrderController extends Controller
 {
-    public function show(ProductionOrder $prod_order)
+    public function show(ProductionOrder $order)
     {
         $lines = ProductionLine::all();
         return view('production.show', [
-            'prod_order' => $prod_order,
+            'order' => $order,
             'lines' => $lines
         ]);
     }

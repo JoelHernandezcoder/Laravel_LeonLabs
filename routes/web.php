@@ -16,6 +16,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/change-language/{lang}', function ($lang) {
+    // Guardamos la preferencia en sesión
+    session(['lang' => $lang]);
+
+    // Redirige a la página anterior (o a donde necesites)
+    return redirect()->back();
+})->name('change.language');
+
 Route::get('/clients', [ClientController::class, 'index']);
 Route::get('/clients/create', [ClientController::class, 'create']);
 Route::get('/clients/{client}', [ClientController::class, 'show']);
@@ -53,8 +61,9 @@ Route::get('/supplies/{supply}', [SupplyController::class, 'show']);
 Route::delete('/supplies/{supply}', [SupplyController::class, 'destroy']);
 Route::post('/supplies', [SupplyController::class, 'store']);
 
+Route::get('/production/order/{order}', [ProductionOrderController::class, 'show']);
+Route::put('/production/order/{order}', [ProductionCalendarController::class, 'updateState']);
 Route::get('/production/{month?}/{year?}', [ProductionCalendarController::class, 'index'])->name('production');
-Route::get('/production/{prod_order}', [ProductionOrderController::class, 'show']);
 
 Route::get('/lines', [ProductionLineController::class, 'index']);
 Route::get('/lines/{line}', [ProductionLineController::class, 'show']);

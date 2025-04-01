@@ -4,51 +4,74 @@
             {{ $client->name }}
         </h2>
     </x-slot>
+
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="space-y-8 mt-4">
                     <div class="flex">
-                        <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">Country: {{ $client->country }}</p>
+                        <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
+                            {{ __('messages.Country', [], session('lang','en')) }}: {{ $client->country }}
+                        </p>
                         @php
                             $countryCodes = config('country_codes');
                             $countryCode = $countryCodes[$client->country] ?? null;
                         @endphp
 
                         @if ($countryCode)
-                            <img src="https://flagcdn.com/60x45/{{ $countryCode }}.png"
-                                 alt="{{ $client->country }}">
+                            <img
+                                src="https://flagcdn.com/60x45/{{ $countryCode }}.png"
+                                alt="{{ $client->country }}"
+                            >
                         @else
-                            <p>No country flag available</p>
+                            <p class="dark:text-white">
+                                {{ __('messages.No country flag available', [], session('lang','en')) }}
+                            </p>
                         @endif
                     </div>
-                    <p class="dark:text-white text-lg mx-8 text-blue-800">Address: {{ $client->address }}</p>
-                    <p class="dark:text-white text-lg mx-8 text-blue-800">Phone: {{ $client->phone }}</p>
-                    <p class="dark:text-white text-lg mx-8 text-blue-800">Email: {{ $client->email }}</p>
 
+                    <p class="dark:text-white text-lg mx-8 text-blue-800">
+                        {{ __('messages.Address', [], session('lang','en')) }}: {{ $client->address }}
+                    </p>
+                    <p class="dark:text-white text-lg mx-8 text-blue-800">
+                        {{ __('messages.Phone', [], session('lang','en')) }}: {{ $client->phone }}
+                    </p>
+                    <p class="dark:text-white text-lg mx-8 text-blue-800">
+                        {{ __('messages.Email', [], session('lang','en')) }}: {{ $client->email }}
+                    </p>
 
-                    <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">Sales</h1>
+                    <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">
+                        {{ __('messages.Sales', [], session('lang','en')) }}
+                    </h1>
                     <ul>
                         @foreach ($sales as $sale)
                             <div class="dark:bg-gray-700 bg-gray-100 mx-5 p-4 rounded-md mb-4">
                                 <li class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
-                                    <a href="/sales/{{ $sale->id}}"><strong>• Id:</strong> {{ $sale->id}} | <strong>Client:</strong> {{ $sale->client->name }} | <strong> Total:</strong>  {{ $sale->total }} U$D</a>
+                                    <a href="/sales/{{ $sale->id }}">
+                                        <strong>• {{ __('messages.ID', [], session('lang','en')) }}:</strong> {{ $sale->id }}
+                                        | <strong>{{ __('messages.Client', [], session('lang','en')) }}:</strong> {{ $sale->client->name }}
+                                        | <strong>{{ __('messages.Total', [], session('lang','en')) }}:</strong> {{ $sale->total }} U$D
+                                    </a>
                                 </li>
                             </div>
                         @endforeach
                     </ul>
 
                     <div class="ml-4">
-                        <x-action-button href="/clients">Client's List</x-action-button>
+                        <x-action-button href="/clients">
+                            {{ __("messages.Client's List", [], session('lang','en')) }}
+                        </x-action-button>
                     </div>
 
                     <x-forms.divider/>
 
-                    <form method="POST" action="{{$client->id}}">
+                    <form method="POST" action="{{ $client->id }}">
                         @csrf
                         @method('DELETE')
                         <div class="text-end mx-4 mb-4">
-                            <x-danger-button>Delete Client</x-danger-button>
+                            <x-danger-button>
+                                {{ __('messages.Delete Client', [], session('lang','en')) }}
+                            </x-danger-button>
                         </div>
                     </form>
                 </div>

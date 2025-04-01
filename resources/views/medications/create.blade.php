@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create Medication
+            {{ __('messages.Create Medication', [], session('lang','en')) }}
         </h2>
     </x-slot>
 
@@ -10,29 +10,48 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <x-forms.form method="POST" action="/medications">
                     <div class="space-y-6">
-                        <x-forms.input label="Name" name="name" required />
-                        <x-forms.input label="Price" name="price" required />
-                        <x-forms.input label="Description" name="description" required />
-                        <x-forms.input label="Photo Url" name="photo" required />
+                        <x-forms.input
+                            label="{{ __('messages.Name', [], session('lang','en')) }}"
+                            name="name"
+                            required
+                        />
+
+                        <x-forms.input
+                            label="{{ __('messages.Price', [], session('lang','en')) }}"
+                            name="price"
+                            required
+                        />
+
+                        <x-forms.input
+                            label="{{ __('messages.Description', [], session('lang','en')) }}"
+                            name="description"
+                            required
+                        />
+
+                        <x-forms.input
+                            label="{{ __('messages.Photo Url', [], session('lang','en')) }}"
+                            name="photo"
+                            required
+                        />
 
                         <x-forms.divider/>
 
                         <div class="flex flex-col items-center space-y-4" id="supplies-section">
                             <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                                List of Supplies for Production
+                                {{ __('messages.List of Supplies for Production', [], session('lang','en')) }}
                             </h2>
 
                             <div class="supply-row">
                                 <div class="flex space-x-4">
                                     <x-forms.select
-                                        label="Supply"
+                                        label="{{ __('messages.Supply', [], session('lang','en')) }}"
                                         name="supplies[0][id]"
                                         :options="$supplies"
                                         required
                                         class="supply-select"
                                     />
                                     <x-forms.input
-                                        label="Quantity"
+                                        label="{{ __('messages.Quantity', [], session('lang','en')) }}"
                                         name="supplies[0][quantity]"
                                         type="number"
                                         min="1"
@@ -40,7 +59,7 @@
                                         class="quantity-input"
                                     />
                                     <x-forms.input
-                                        label="Unit Code"
+                                        label="{{ __('messages.Unit Code', [], session('lang','en')) }}"
                                         name="supplies[0][unit_code]"
                                         type="text"
                                         readonly
@@ -50,7 +69,7 @@
                                         type="button"
                                         class="remove-supply-btn mt-8"
                                     >
-                                        Remove
+                                        {{ __('messages.Remove', [], session('lang','en')) }}
                                     </x-danger-button>
                                 </div>
                             </div>
@@ -62,20 +81,24 @@
                                 id="add-supply-btn"
                                 class="px-4 py-2 bg-blue-500 text-white rounded-md"
                             >
-                                Add Supply
+                                {{ __('messages.Add Supply', [], session('lang','en')) }}
                             </button>
                         </div>
 
                         <x-forms.divider/>
 
                         <div class="text-center py-4">
-                            <x-forms.button>Create Medication</x-forms.button>
+                            <x-forms.button>
+                                {{ __('messages.Create Medication', [], session('lang','en')) }}
+                            </x-forms.button>
                         </div>
                     </div>
                 </x-forms.form>
 
                 <div class="ml-4 mb-4">
-                    <x-action-button href="/medications">Medication's List</x-action-button>
+                    <x-action-button href="/medications">
+                        {{ __("messages.Medication's List", [], session('lang','en')) }}
+                    </x-action-button>
                 </div>
             </div>
         </div>
@@ -96,23 +119,23 @@
             newRow.innerHTML = `
                 <div class="flex space-x-4">
                     <x-forms.select
-                        label="Supply"
-                        name="supplies[${newRowIndex}][id]"
+                        label="{{ __('messages.Supply', [], session('lang','en')) }}"
+                        name="supplies[\${newRowIndex}][id]"
                         :options="$supplies"
                         required
                         class="supply-select"
                     />
                     <x-forms.input
-                        label="Quantity"
-                        name="supplies[${newRowIndex}][quantity]"
+                        label="{{ __('messages.Quantity', [], session('lang','en')) }}"
+                        name="supplies[\${newRowIndex}][quantity]"
                         type="number"
                         min="1"
                         required
                         class="quantity-input"
                     />
                     <x-forms.input
-                        label="Unit Code"
-                        name="supplies[${newRowIndex}][unit_code]"
+                        label="{{ __('messages.Unit Code', [], session('lang','en')) }}"
+                        name="supplies[\${newRowIndex}][unit_code]"
                         type="text"
                         readonly
                         class="unit-code-input"
@@ -121,10 +144,10 @@
                         type="button"
                         class="remove-supply-btn mt-8"
                     >
-                        Remove
-                    </x-danger-button>
-                </div>
-            `;
+                        {{ __('messages.Remove', [], session('lang','en')) }}
+            </x-danger-button>
+        </div>
+`;
 
             suppliesSection.appendChild(newRow);
 
@@ -146,8 +169,8 @@
         });
 
         function updateUnitCode(rowIndex) {
-            const selectElement = document.querySelector(`select[name="supplies[${rowIndex}][id]"]`);
-            const unitCodeInput = document.querySelector(`input[name="supplies[${rowIndex}][unit_code]"]`);
+            const selectElement = document.querySelector(`select[name="supplies[\${rowIndex}][id]"]`);
+            const unitCodeInput = document.querySelector(`input[name="supplies[\${rowIndex}][unit_code]"]`);
             const supplyId = selectElement.value;
 
             if (unitCodes[supplyId]) {
