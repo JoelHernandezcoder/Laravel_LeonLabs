@@ -5,6 +5,8 @@ return [
         '01-01', // Año Nuevo
         '03-24', // Día Nacional de la Memoria por la Verdad y la Justicia
         '04-02', // Día del Veterano y de los Caídos en Malvinas
+        '04-17', // Jueves Santo
+        '04-18', // Viernes Santo
         '05-01', // Día del Trabajador
         '05-25', // Día de la Revolución de Mayo
         '06-20', // Día de la Bandera

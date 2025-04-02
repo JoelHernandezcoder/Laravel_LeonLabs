@@ -89,9 +89,11 @@ return [
     'Batch'                   => 'Batch',
     'State'                   => 'State',
     'Production Lines'        => 'Production Lines',
+    'Line'             => 'Line',
     'Lines'             => 'Lines',
     'Production Orders' => 'Production Orders',
     'Production Order'         => 'Production Order',
     'End Date'                 => 'End Date',
     "Production Order's List"  => "Production Order's List",
+    'No production line assigned' => 'No production line assigned',
 ];

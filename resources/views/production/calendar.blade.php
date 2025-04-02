@@ -89,8 +89,12 @@
                                 10 => 'background-color: #ffe4e6'
                             ];
 
-                            // Feriados fijos de Argentina
-                            $argHolidays = config('hollidays.argentina');
+
+                           // Language - Holidays: 'en' USA - 'es'Argentina.
+                            $holidays = session('lang', 'en') === 'en'
+                                ? config('holidays.usa')
+                                : config('holidays.argentina');
+
                         @endphp
 
                         @for ($i = 0; $i < $emptyDays; $i++)
@@ -106,7 +110,7 @@
                                         $dayOrders[] = $order;
                                     }
                                 }
-                                $isHoliday = in_array($currentDay->format('m-d'), $argHolidays);
+                               $isHoliday = in_array($currentDay->format('m-d'), $holidays);
                                 $bgColor = $isHoliday ? 'background-color: #fecaca'
                                          : (count($dayOrders) ? 'background-color: #bfdbfe' : '');
                             @endphp
@@ -133,15 +137,21 @@
                                     @endphp
 
                                     <div class="p-2 mt-2 rounded-lg shadow-sm text-xs" style="{{ $color }}">
-                                        <div class="flex lg:flex-row justify-between">
-                                            <p><strong>Order: {{ $order->id }}</strong></p>
-                                            <p>
-                                                <span title="{{ $tooltip }}">
-                                                    {{ $emoji }}
-                                                </span>
-                                            </p>
+                                        {{-- Pantalla grande: detalles completos --}}
+                                        <div class="hidden lg:block">
+                                            <div class="flex justify-between">
+                                                <p><strong>Order: {{ $order->id }}</strong></p>
+                                                <p>
+                                                    <span title="{{ $tooltip }}">{{ $emoji }}</span>
+                                                </p>
+                                            </div>
+                                            <p class="text-gray-500">Batch: {{ $order->batch }}</p>
                                         </div>
-                                        <p class="text-gray-500">Batch: {{ $order->batch }}</p>
+
+                                        {{-- Pantalla chica: solo emoji + número --}}
+                                        <div class="lg:hidden text-center font-semibold text-sm">
+                                            <span title="{{ $tooltip }}">{{ $order->id }} {{ $emoji }}</span>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
@@ -182,38 +192,40 @@
                                 {{ $order->batch }}
                             </td>
                             <td>
-                                <x-forms.form
-                                    method="POST"
-                                    action="/production/order/{{ $order->id }}"
-                                    class="inline"
-                                >
-                                    @csrf
-                                    @method('PUT')
-                                    <select
-                                        name="state"
-                                        onchange="this.form.submit()"
-                                        class="bg-transparent border-none"
+                                <div class="mb-6">
+                                    <x-forms.form
+                                        method="POST"
+                                        action="/production/order/{{ $order->id }}"
+                                        class="inline"
                                     >
-                                        <option
-                                            value="0"
-                                            {{ $order->state == 0 ? 'selected' : '' }}
+                                        @csrf
+                                        @method('PUT')
+                                        <select
+                                            name="state"
+                                            onchange="this.form.submit()"
+                                            class="bg-transparent border-none"
                                         >
-                                            {{ __('messages.Paused', [], session('lang','en')) }}
-                                        </option>
-                                        <option
-                                            value="1"
-                                            {{ $order->state == 1 ? 'selected' : '' }}
-                                        >
-                                            {{ __('messages.In Progress', [], session('lang','en')) }}
-                                        </option>
-                                        <option
-                                            value="2"
-                                            {{ $order->state == 2 ? 'selected' : '' }}
-                                        >
-                                            {{ __('messages.Completed', [], session('lang','en')) }}
-                                        </option>
-                                    </select>
-                                </x-forms.form>
+                                            <option
+                                                value="0"
+                                                {{ $order->state == 0 ? 'selected' : '' }}
+                                            >
+                                                {{ __('messages.Paused', [], session('lang','en')) }}
+                                            </option>
+                                            <option
+                                                value="1"
+                                                {{ $order->state == 1 ? 'selected' : '' }}
+                                            >
+                                                {{ __('messages.In Progress', [], session('lang','en')) }}
+                                            </option>
+                                            <option
+                                                value="2"
+                                                {{ $order->state == 2 ? 'selected' : '' }}
+                                            >
+                                                {{ __('messages.Completed', [], session('lang','en')) }}
+                                            </option>
+                                        </select>
+                                    </x-forms.form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -222,12 +234,11 @@
 
                 <x-forms.divider/>
 
-                <div class="text-center mb-8">
+                <div class="text-center">
                     <x-action-button href="/lines">
                         {{ __('messages.Production Lines', [], session('lang','en')) }}
                     </x-action-button>
                 </div>
-
             </div>
         </div>
     </div>

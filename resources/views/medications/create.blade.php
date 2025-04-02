@@ -157,8 +157,9 @@
 
             const selectElement = newRow.querySelector('.supply-select');
             selectElement.addEventListener('change', function () {
-                updateUnitCode(newRowIndex);
+                updateUnitCode(newRow);
             });
+
         });
 
         suppliesSection.addEventListener('click', function (event) {
@@ -168,20 +169,24 @@
             }
         });
 
-        function updateUnitCode(rowIndex) {
-            const selectElement = document.querySelector(`select[name="supplies[\${rowIndex}][id]"]`);
-            const unitCodeInput = document.querySelector(`input[name="supplies[\${rowIndex}][unit_code]"]`);
+        function updateUnitCode(rowElement) {
+            const selectElement = rowElement.querySelector('.supply-select');
+            const unitCodeInput = rowElement.querySelector('.unit-code-input');
             const supplyId = selectElement.value;
 
             if (unitCodes[supplyId]) {
                 unitCodeInput.value = unitCodes[supplyId];
+            } else {
+                unitCodeInput.value = '';
             }
         }
 
+
         const supplySelects = document.querySelectorAll('.supply-select');
-        supplySelects.forEach((select, index) => {
+        supplySelects.forEach((select) => {
             select.addEventListener('change', function () {
-                updateUnitCode(index);
+                const row = select.closest('.supply-row');
+                updateUnitCode(row);
             });
         });
     </script>

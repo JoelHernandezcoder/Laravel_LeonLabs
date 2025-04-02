@@ -56,6 +56,19 @@
 
                 <x-forms.divider/>
 
+
+                <form method="POST" action="">
+                    @csrf
+                    @method('PATCH')
+                    <div class="text-end mx-4 mb-4">
+                        <x-forms.button>
+                           Modify Production Order
+                        </x-forms.button>
+                    </div>
+                </form>
+
+                <x-forms.divider/>
+
                 <div class="text-center mb-4">
                     <x-action-button href="/production">
                         {{ __("messages.Production Order's List", [], session('lang','en')) }}

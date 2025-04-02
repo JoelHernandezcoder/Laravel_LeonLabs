@@ -14,7 +14,7 @@
 
                 @foreach ($lines ?? [] as $line)
                     <div class="dark:bg-gray-800 text-center bg-gray-100 mx-5 p-4 rounded-md">
-                        <x-action-button class="w-48" href="/sales/{{ $line->id }}">
+                        <x-action-button class="w-48" href="/lines/{{ $line->id }}">
                             {{ $line->name }}
                         </x-action-button>
                     </div>

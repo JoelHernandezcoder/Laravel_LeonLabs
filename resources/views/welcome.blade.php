@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Leon's Lab ERP</title>
+        <title>Leon's Lab</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
             <main class="flex max-w-[335px] w-full flex-col items-center lg:max-w-4xl">
                 <div class="flex items-center gap-4">
                     <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-500 to-rose-500 bg-clip-text text-transparent" style="font-family: 'Press Start 2P', cursive;">
-                        LEON'S LAB ERP
+                        LEON'S LAB
                     </h1>
                     <x-application-logo/>
                 </div>

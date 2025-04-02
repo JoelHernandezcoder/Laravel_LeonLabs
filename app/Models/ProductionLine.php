@@ -21,4 +21,5 @@ class ProductionLine extends Model
     {
         return $this->belongsToMany(Employee::class, 'production_line_employee');
     }
+
 }

@@ -4,17 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Employee extends Model
 {
+
     /** @use HasFactory<\Database\Factories\EmployeeFactory> */
     use HasFactory;
 
     protected $table = 'employees';
 
-    public function line(): BelongsTo
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'gender',
+        'address',
+        'meal_option',
+        'role',
+        'seniority',
+        'salary',
+        'start_date',
+    ];
+
+
+    public function lines(): BelongsToMany
     {
-        return $this->belongsTo(ProductionLine::class, 'production_line_id');
+        return $this->belongsToMany(ProductionLine::class, 'production_line_employee');
     }
+
+
 }

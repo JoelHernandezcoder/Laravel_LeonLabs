@@ -89,9 +89,11 @@ return [
     'Batch'                   => 'Lote',
     'State'                   => 'Estado',
     'Production Lines'        => 'Líneas de Producción',
+    'Line'              => 'Línea',
     'Lines'             => 'Líneas',
     'Production Orders' => 'Órdenes de Producción',
     'Production Order'         => 'Orden de Producción',
     'End Date'                 => 'Fecha de Fin',
     "Production Order's List"  => 'Lista de Órdenes de Producción',
+    'No production line assigned' => 'Sin línea de producción asignada',
 ];

@@ -13,7 +13,7 @@
                     <a class="flex items-center justify-center" href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                         <h1 class="p-4 text-xl font-bold bg-gradient-to-r from-blue-500 to-rose-500 bg-clip-text text-transparent" style="font-family: 'Press Start 2P', cursive;">
-                            LEON'S LAB ERP
+                            LEON'S LAB
                         </h1>
                     </a>
                 </div>
@@ -21,7 +21,7 @@
 
             <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
 
-                <!-- Lenguages -->
+                <!-- Languages -->
                 <div class="flex items-center space-x-1">
                     <x-dropdown-link :href="route('change.language', 'es')"
                                      class="{{ session('lang','en') === 'es' ? '' : 'opacity-50' }}"
@@ -83,6 +83,27 @@
 
             <!-- Hamburger (Responsive) -->
             <div class="-me-2 flex items-center sm:hidden">
+                <!-- Languages -->
+                <div class="flex items-center space-x-1">
+                    <x-dropdown-link :href="route('change.language', 'es')"
+                                     class="{{ session('lang','en') === 'es' ? '' : 'opacity-50' }}"
+                    >
+                        <img
+                            src="{{ Vite::asset('resources/images/flags/argentina-flag.png') }}"
+                            alt="Español"
+                            class="inline-block w-6 h-6"
+                        />
+                    </x-dropdown-link>
+                    <x-dropdown-link :href="route('change.language', 'en')"
+                                     class="{{ session('lang','en') === 'en' ? '' : 'opacity-50' }}"
+                    >
+                        <img
+                            src="{{ Vite::asset('resources/images/flags/us-flag.png') }}"
+                            alt="English"
+                            class="inline-block w-6 h-6"
+                        />
+                    </x-dropdown-link>
+                </div>
                 <button @click="open = ! open"
                         class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500
                                hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900
@@ -108,11 +129,6 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('messages.Dashboard', [], session('lang','en')) }}
-            </x-responsive-nav-link>
-        </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">

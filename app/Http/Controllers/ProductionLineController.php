@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\ProductionLine;
 use Illuminate\Http\Request;
 
@@ -14,5 +15,11 @@ class ProductionLineController extends Controller
             'lines' => $lines,
         ]);
     }
-
+    public function show(ProductionLine $line)
+    {
+        return view('production.lines.show', [
+            'line' => $line,
+            'employees' =>$line->employees,
+        ]);
+    }
 }

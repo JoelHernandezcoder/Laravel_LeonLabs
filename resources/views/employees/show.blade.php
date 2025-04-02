@@ -30,13 +30,20 @@
                     {{ __('messages.Start Date', [], session('lang','en')) }}: {{ $employee->start_date }}
                 </p>
 
+                <x-forms.divider/>
+
                 <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">
                     {{ __('messages.Production Line', [], session('lang','en')) }}
                 </h1>
-                <ul>
-                    <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
-                        {{ $employee->line }}
-                    </p>
+
+                <ul class="p-8">
+                    @if($line)
+                        <x-action-button href="/lines/ {{ $line->id }}">
+                            {{ $line->name }}
+                        </x-action-button>
+                    @else
+                        <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">{{ __('messages.No production line assigned', [], session('lang', 'en')) }}</p>
+                    @endif
                 </ul>
 
                 <x-forms.divider/>
