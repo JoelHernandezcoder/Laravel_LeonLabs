@@ -13,7 +13,7 @@
                 </h1>
 
                 @foreach ($lines ?? [] as $line)
-                    <div class="dark:bg-gray-800 text-center bg-gray-100 mx-5 p-4 rounded-md">
+                    <div class="dark:bg-gray-800 text-center mx-5 p-4">
                         <x-action-button class="w-48" href="/lines/{{ $line->id }}">
                             {{ $line->name }}
                         </x-action-button>

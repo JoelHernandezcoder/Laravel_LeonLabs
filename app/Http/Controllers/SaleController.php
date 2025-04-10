@@ -110,11 +110,29 @@ class SaleController extends Controller
             $batchNumber = str_pad($batchNumber, 3, '0', STR_PAD_LEFT);
             $batch = "{$batchPrefix}-{$batchNumber}-{$year}";
 
+            // 🚨 Buscar línea de producción libre
+            $availableLine = ProductionLine::all()->first(function ($line) use ($attributes) {
+                return !$line->productionOrders()
+                    ->where(function ($query) use ($attributes) {
+                        $query->where('start_date', '<=', $attributes['agreed_date'])
+                            ->where('end_date', '>=', $attributes['start_date']);
+                    })
+                    ->exists();
+            });
+
+            if (!$availableLine) {
+                return back()->withErrors([
+                    'date' => 'No available production lines for one or more medications in the selected date range.',
+                ])->withInput();
+            }
+
+            // ✅ Crear la orden con la línea disponible
             $productionOrder = ProductionOrder::create([
                 'batch' => $batch,
                 'sale_id' => $sale->id,
                 'start_date' => $attributes['start_date'],
                 'end_date' => $sale->agreed_date,
+                'production_line_id' => $availableLine->id,
             ]);
 
             $productionOrder->medications()->attach($medication->id, [

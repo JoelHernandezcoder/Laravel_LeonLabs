@@ -7,43 +7,51 @@
 
     <!-- Primary Navigation Menu -->
     <div class="px-4 sm:px-6 lg:px-8 flex justify-between h-16">
-            <div class="flex items-center">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a class="flex items-center justify-center" href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                        <h1 class="p-4 text-xl font-bold bg-gradient-to-r from-blue-500 to-rose-500 bg-clip-text text-transparent" style="font-family: 'Press Start 2P', cursive;">
-                            LEON'S LAB
-                        </h1>
-                    </a>
-                </div>
-            </div>
+        <div class="flex items-center">
+            <!-- Logo + Texto con sombras según tema -->
+            <div class="shrink-0 flex items-center transition-all duration-300
+                drop-shadow-[0_2px_6px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]
+                dark:drop-shadow-[0_0_10px_rgba(34,211,238,0.4)] dark:hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.6)]">
 
-            <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
+                <a class="flex items-center justify-center" href="{{ route('dashboard') }}">
+                    <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                    <h1 class="p-4 text-xl font-bold bg-gradient-to-r from-blue-500 to-rose-500 bg-clip-text text-transparent" style="font-family: 'Press Start 2P', cursive;">
+                        LEON'S LAB
+                    </h1>
+                </a>
+            </div>
+        </div>
+
+        <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
 
                 <!-- Languages -->
-                <div class="flex items-center space-x-1">
-                    <x-dropdown-link :href="route('change.language', 'es')"
-                                     class="{{ session('lang','en') === 'es' ? '' : 'opacity-50' }}"
-                    >
-                        <img
-                            src="{{ Vite::asset('resources/images/flags/argentina-flag.png') }}"
-                            alt="Español"
-                            class="inline-block w-6 h-6"
-                        />
-                    </x-dropdown-link>
-                    <x-dropdown-link :href="route('change.language', 'en')"
-                                     class="{{ session('lang','en') === 'en' ? '' : 'opacity-50' }}"
-                    >
-                        <img
-                            src="{{ Vite::asset('resources/images/flags/us-flag.png') }}"
-                            alt="English"
-                            class="inline-block w-6 h-6"
-                        />
-                    </x-dropdown-link>
-                </div>
+            <!-- Languages -->
+            <div class="flex items-center space-x-1">
+                <x-dropdown-link :href="route('change.language', 'es')"
+                                 class="{{ session('lang','en') === 'es' ? '' : 'opacity-50' }}">
+                    <img
+                        src="{{ Vite::asset('resources/images/flags/argentina-flag.png') }}"
+                        alt="Español"
+                        class="inline-block w-6 h-6 transition-all duration-300
+                   drop-shadow-[0_2px_6px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]
+                   dark:drop-shadow-[0_0_10px_rgba(34,211,238,0.4)] dark:hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.6)]"
+                    />
+                </x-dropdown-link>
 
-                <!-- Settings Dropdown -->
+                <x-dropdown-link :href="route('change.language', 'en')"
+                                 class="{{ session('lang','en') === 'en' ? '' : 'opacity-50' }}">
+                    <img
+                        src="{{ Vite::asset('resources/images/flags/us-flag.png') }}"
+                        alt="English"
+                        class="inline-block w-6 h-6 transition-all duration-300
+                   drop-shadow-[0_2px_6px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]
+                   dark:drop-shadow-[0_0_10px_rgba(34,211,238,0.4)] dark:hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.6)]"
+                    />
+                </x-dropdown-link>
+            </div>
+
+
+            <!-- Settings Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button

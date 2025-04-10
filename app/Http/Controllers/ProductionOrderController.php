@@ -11,10 +11,10 @@ class ProductionOrderController extends Controller
 {
     public function show(ProductionOrder $order)
     {
-        $lines = ProductionLine::all();
+        $line = $order->line;
         return view('production.show', [
             'order' => $order,
-            'lines' => $lines
+            'line' => $line
         ]);
     }
     public function updateState(Request $request, $order)

@@ -110,14 +110,15 @@
                                         $dayOrders[] = $order;
                                     }
                                 }
-                               $isHoliday = in_array($currentDay->format('m-d'), $holidays);
+                                $isHoliday = in_array($currentDay->format('m-d'), $holidays);
+                                $isToday = $currentDay->isToday();
                                 $bgColor = $isHoliday ? 'background-color: #fecaca'
                                          : (count($dayOrders) ? 'background-color: #bfdbfe' : '');
                             @endphp
 
                             <div
-                                class="p-4 border border-gray-300 rounded-lg hover:bg-gray-200"
-                                style="{{ $bgColor }}; {{ $currentDay->isWeekend() ? 'color: #ef4444' : '' }}"
+                                class="p-4 border border-gray-300 rounded-lg hover:bg-gray-200 {{ $isToday ? 'bg-gradient-to-r from-cyan-400 to-rose-500 text-white font-bold shadow-lg' : '' }}"
+                                style="{{ !$isToday ? $bgColor : '' }}; {{ $currentDay->isWeekend() && !$isToday ? 'color: #ef4444' : '' }}"
                             >
                                 <span class="font-bold">{{ $day }}</span>
 
@@ -137,18 +138,13 @@
                                     @endphp
 
                                     <div class="p-2 mt-2 rounded-lg shadow-sm text-xs" style="{{ $color }}">
-                                        {{-- Pantalla grande: detalles completos --}}
                                         <div class="hidden lg:block">
                                             <div class="flex justify-between">
                                                 <p><strong>Order: {{ $order->id }}</strong></p>
-                                                <p>
-                                                    <span title="{{ $tooltip }}">{{ $emoji }}</span>
-                                                </p>
+                                                <p><span title="{{ $tooltip }}">{{ $emoji }}</span></p>
                                             </div>
                                             <p class="text-gray-500">Batch: {{ $order->batch }}</p>
                                         </div>
-
-                                        {{-- Pantalla chica: solo emoji + número --}}
                                         <div class="lg:hidden text-center font-semibold text-sm">
                                             <span title="{{ $tooltip }}">{{ $order->id }} {{ $emoji }}</span>
                                         </div>

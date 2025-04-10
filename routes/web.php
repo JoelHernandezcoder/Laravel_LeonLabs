@@ -65,6 +65,9 @@ Route::get('/production/{month?}/{year?}', [ProductionCalendarController::class,
 
 Route::get('/lines', [ProductionLineController::class, 'index']);
 Route::get('/lines/{line}', [ProductionLineController::class, 'show']);
+// routes/web.php
+Route::post('/lines/{line}/employees', [ProductionLineController::class, 'addEmployee']);
+Route::delete('/lines/{line}/employees/{employee}', [ProductionLineController::class, 'removeEmployee']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

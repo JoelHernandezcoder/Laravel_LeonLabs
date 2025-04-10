@@ -17,19 +17,16 @@
                     height="60"
                 />
 
-                {{-- Precio --}}
                 <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
                     {{ __('messages.Price', [], session('lang','en')) }}: ${{ $medication->price }}
                 </p>
 
-                {{-- Descripción --}}
                 <p class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
-                    {{ $medication->description }}
+                    {{ __('messages.Description', [], session('lang','en')) }}: {{ $medication->description }}
                 </p>
 
                 <x-forms.divider/>
 
-                {{-- Lista de Suministros para Producción (por dosis) --}}
                 <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">
                     {{ __('messages.Production Supply List (Per Dose)', [], session('lang','en')) }}
                 </h1>
@@ -52,7 +49,6 @@
 
                 <x-forms.divider/>
 
-                {{-- Ventas de este medicamento --}}
                 <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">
                     {{ $medication->name }}'s {{ __('messages.Sales', [], session('lang','en')) }}
                 </h1>
@@ -73,7 +69,6 @@
 
                 <x-forms.divider/>
 
-                {{-- Volver a la lista de medicamentos --}}
                 <div class="ml-4">
                     <x-action-button href="/medications">
                         {{ __("messages.Medication's List", [], session('lang','en')) }}
@@ -82,7 +77,6 @@
 
                 <x-forms.divider/>
 
-                {{-- Botón para eliminar el medicamento --}}
                 <form method="POST" action="{{ $medication->id }}">
                     @csrf
                     @method('DELETE')
