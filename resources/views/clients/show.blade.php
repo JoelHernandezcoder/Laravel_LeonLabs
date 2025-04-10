@@ -43,19 +43,23 @@
                     <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">
                         {{ __('messages.Sales', [], session('lang','en')) }}
                     </h1>
-                    <ul>
-                        @foreach ($sales as $sale)
-                            <div class="dark:bg-gray-700 bg-gray-100 mx-5 p-4 rounded-md mb-4">
-                                <li class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
-                                    <a href="/sales/{{ $sale->id }}">
-                                        <strong>• {{ __('messages.ID', [], session('lang','en')) }}:</strong> {{ $sale->id }}
-                                        | <strong>{{ __('messages.Client', [], session('lang','en')) }}:</strong> {{ $sale->client->name }}
-                                        | <strong>{{ __('messages.Total', [], session('lang','en')) }}:</strong> {{ $sale->total }} U$D
-                                    </a>
-                                </li>
-                            </div>
-                        @endforeach
+
+                    <ul class="mx-5 mt-4 space-y-4">
+                        @forelse ($sales as $sale)
+                            <li class="dark:bg-gray-700 bg-gray-100 p-4 rounded-md">
+                                <a class="dark:text-white text-lg text-blue-800" href="/sales/{{ $sale->id }}">
+                                    <strong>• {{ __('messages.ID', [], session('lang','en')) }}:</strong> {{ $sale->id }}
+                                    | <strong>{{ __('messages.Client', [], session('lang','en')) }}:</strong> {{ $sale->client->name }}
+                                    | <strong>{{ __('messages.Total', [], session('lang','en')) }}:</strong> {{ $sale->total }} U$D
+                                </a>
+                            </li>
+                        @empty
+                            <li class="dark:text-white mx-8 mt-4">
+                                {{ __('messages.No sales found', [], session('lang','en')) }}
+                            </li>
+                        @endforelse
                     </ul>
+
 
                     <div class="ml-4">
                         <x-action-button href="/clients">

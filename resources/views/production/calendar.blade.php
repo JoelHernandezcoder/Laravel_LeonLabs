@@ -1,4 +1,6 @@
-@php use Carbon\Carbon; @endphp
+@php
+    use Carbon\Carbon;
+@endphp
 
 <x-app-layout>
     <x-slot name="header">
@@ -89,12 +91,10 @@
                                 10 => 'background-color: #ffe4e6'
                             ];
 
-
-                           // Language - Holidays: 'en' USA - 'es'Argentina.
+                           // Language - Holidays: 'en' USA - 'es' Argentina.
                             $holidays = session('lang', 'en') === 'en'
                                 ? config('holidays.usa')
                                 : config('holidays.argentina');
-
                         @endphp
 
                         @for ($i = 0; $i < $emptyDays; $i++)
@@ -140,10 +140,10 @@
                                     <div class="p-2 mt-2 rounded-lg shadow-sm text-xs" style="{{ $color }}">
                                         <div class="hidden lg:block">
                                             <div class="flex justify-between">
-                                                <p><strong>Order: {{ $order->id }}</strong></p>
+                                                <p><strong>{{ __('messages.Production Order', [], session('lang','en')) }}: {{ $order->id }}</strong></p>
                                                 <p><span title="{{ $tooltip }}">{{ $emoji }}</span></p>
                                             </div>
-                                            <p class="text-gray-500">Batch: {{ $order->batch }}</p>
+                                            <p class="text-gray-500">{{ __('messages.Batch', [], session('lang','en')) }}: {{ $order->batch }}</p>
                                         </div>
                                         <div class="lg:hidden text-center font-semibold text-sm">
                                             <span title="{{ $tooltip }}">{{ $order->id }} {{ $emoji }}</span>
@@ -167,6 +167,7 @@
                     <tr class="border-b">
                         <th class="p-2 dark:text-white">{{ __('messages.ID', [], session('lang','en')) }}</th>
                         <th class="p-2 dark:text-white">{{ __('messages.Batch', [], session('lang','en')) }}</th>
+                        <th class="p-2 dark:text-white">{{ __('messages.Line', [], session('lang','en')) }}</th>
                         <th class="p-2 dark:text-white">{{ __('messages.State', [], session('lang','en')) }}</th>
                     </tr>
                     </thead>
@@ -174,6 +175,20 @@
                     @foreach ($ordersThisMonth as $order)
                         @php
                             $color = $colors[(($order->id - 1) % 10) + 1];
+
+                            $stateLabel = match($order->state) {
+                                0 => __('messages.Paused', [], session('lang','en')),
+                                1 => __('messages.In Progress', [], session('lang','en')),
+                                2 => __('messages.Completed', [], session('lang','en')),
+                                default => $order->state,
+                            };
+
+                            $stateEmoji = match($order->state) {
+                                0 => '⏳',
+                                1 => '⚙️',
+                                2 => '✅',
+                                default => '',
+                            };
                         @endphp
                         <tr class="border-b" style="{{ $color }}">
                             <td class="p-2">
@@ -187,40 +202,12 @@
                             <td class="p-2">
                                 {{ $order->batch }}
                             </td>
-                            <td>
-                                <div class="mb-6">
-                                    <x-forms.form
-                                        method="POST"
-                                        action="/production/order/{{ $order->id }}"
-                                        class="inline"
-                                    >
-                                        @csrf
-                                        @method('PUT')
-                                        <select
-                                            name="state"
-                                            onchange="this.form.submit()"
-                                            class="bg-transparent border-none"
-                                        >
-                                            <option
-                                                value="0"
-                                                {{ $order->state == 0 ? 'selected' : '' }}
-                                            >
-                                                {{ __('messages.Paused', [], session('lang','en')) }}
-                                            </option>
-                                            <option
-                                                value="1"
-                                                {{ $order->state == 1 ? 'selected' : '' }}
-                                            >
-                                                {{ __('messages.In Progress', [], session('lang','en')) }}
-                                            </option>
-                                            <option
-                                                value="2"
-                                                {{ $order->state == 2 ? 'selected' : '' }}
-                                            >
-                                                {{ __('messages.Completed', [], session('lang','en')) }}
-                                            </option>
-                                        </select>
-                                    </x-forms.form>
+                            <td class="p-2">
+                                {{ $order->line->name }}
+                            </td>
+                            <td class="p-2">
+                                <div>
+                                    <span>{{ $stateLabel }} {{ $stateEmoji }}</span>
                                 </div>
                             </td>
                         </tr>

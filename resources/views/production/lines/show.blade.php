@@ -26,7 +26,6 @@
                     </div>
                 </form>
 
-                {{-- Tabla de empleados asignados --}}
                 <table class="w-full text-left border-collapse">
                     <thead>
                     <tr class="border-b">

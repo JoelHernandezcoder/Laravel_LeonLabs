@@ -19,10 +19,20 @@ class MedicationController extends Controller
     }
     public function show(Medication $medication)
     {
+
+        $supplies = $medication->supplies;
+
+        $unit_cost = 0;
+
+        foreach ($supplies as $supply) {
+            $unit_cost += $supply->price * $supply->pivot->quantity_per_unit;
+        }
+
         return view('medications.show', [
             'medication' => $medication,
             'supplies' => $medication->supplies,
             'sale' => $medication->sale,
+            'unit_cost' => $unit_cost,
         ]);
     }
 
@@ -39,7 +49,6 @@ class MedicationController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los datos
         $attributes = $request->validate([
             'name' => ['required'],
             'price' => ['required', 'numeric'],

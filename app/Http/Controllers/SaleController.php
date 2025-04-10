@@ -82,7 +82,7 @@ class SaleController extends Controller
 
         if ($overlapCount + $newOrders > $maxOrders) {
             return back()->withErrors([
-                'date' => 'There are not enough production lines available for the selected date range.'
+                'date' => __('messages.There are not enough production lines available for the selected date range.', [], session('lang', 'en'))
             ])->withInput();
         }
 
@@ -110,9 +110,8 @@ class SaleController extends Controller
             $batchNumber = str_pad($batchNumber, 3, '0', STR_PAD_LEFT);
             $batch = "{$batchPrefix}-{$batchNumber}-{$year}";
 
-            // 🚨 Buscar línea de producción libre
             $availableLine = ProductionLine::all()->first(function ($line) use ($attributes) {
-                return !$line->productionOrders()
+                return !$line->orders()
                     ->where(function ($query) use ($attributes) {
                         $query->where('start_date', '<=', $attributes['agreed_date'])
                             ->where('end_date', '>=', $attributes['start_date']);
@@ -122,18 +121,20 @@ class SaleController extends Controller
 
             if (!$availableLine) {
                 return back()->withErrors([
-                    'date' => 'No available production lines for one or more medications in the selected date range.',
+                    'date' => __('messages.No available production lines for one or more medications in the selected date range.', [], session('lang','en')),
                 ])->withInput();
             }
 
-            // ✅ Crear la orden con la línea disponible
             $productionOrder = ProductionOrder::create([
                 'batch' => $batch,
                 'sale_id' => $sale->id,
                 'start_date' => $attributes['start_date'],
+                'original_start_date' => $attributes['start_date'],
                 'end_date' => $sale->agreed_date,
+                'original_end_date' => $sale->agreed_date,
                 'production_line_id' => $availableLine->id,
             ]);
+
 
             $productionOrder->medications()->attach($medication->id, [
                 'quantity' => $quantity,
@@ -155,7 +156,8 @@ class SaleController extends Controller
 
     public function destroy(Sale $sale)
     {
+        $sale->medications()->detach();
         $sale->delete();
-        return redirect()->route('sales.index');
+        return redirect('/sales');
     }
 }

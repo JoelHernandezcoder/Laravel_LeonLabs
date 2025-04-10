@@ -38,7 +38,6 @@ class ProductionLineController extends Controller
 
         $employeeId = $request->input('employee');
 
-        // Verificar si ya está en alguna línea
         $alreadyAssigned = \DB::table('production_line_employee')
             ->where('employee_id', $employeeId)
             ->exists();
@@ -49,7 +48,6 @@ class ProductionLineController extends Controller
             ]);
         }
 
-        // Adjuntar si no está en esta línea (redundante si ya controlás lo anterior)
         if (!$line->employees()->where('employee_id', $employeeId)->exists()) {
             $line->employees()->attach($employeeId);
         }

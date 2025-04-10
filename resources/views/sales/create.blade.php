@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create Sale
+            {{ __('messages.Register Sale', [], session('lang','en')) }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
 
-                <!-- Mostrar errores de validación -->
+                <!-- show errors -->
                 @if ($errors->any())
                     <div class="mb-4">
                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -25,13 +25,13 @@
                 <x-forms.form method="POST" action="/sales">
                     <div class="space-y-6">
 
-                        <x-forms.select label="Client" name="client_id" :options="$clients" required id="client-select" />
+                        <x-forms.select label="{{ __('messages.Client', [], session('lang','en')) }}" name="client_id" :options="$clients" required id="client-select" />
 
                         <div id="medications-section">
                             <div class="medication-row">
                                 <div class="flex space-x-4">
                                     <x-forms.select
-                                        label="Medication"
+                                        label="{{ __('messages.Medication', [], session('lang','en')) }}"
                                         name="medications[0][id]"
                                         :options="$medications"
                                         required
@@ -39,7 +39,7 @@
                                         disabled
                                     />
                                     <x-forms.input
-                                        label="Quantity"
+                                        label="{{ __('messages.Quantity', [], session('lang','en')) }}"
                                         name="medications[0][quantity]"
                                         type="number"
                                         min="1"
@@ -60,7 +60,7 @@
                                         class="remove-medication-btn mt-8"
                                         disabled
                                     >
-                                        Remove
+                                        {{ __('messages.Remove', [], session('lang','en')) }}
                                     </x-danger-button>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                                 class="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50"
                                 disabled
                             >
-                                Add Medication
+                                {{ __('messages.Add Medication', [], session('lang','en')) }}
                             </button>
                         </div>
 
@@ -87,18 +87,17 @@
 
                         <x-forms.divider/>
 
-                        <!-- Campos de fechas -->
-                        <x-forms.input label="Start Date" name="start_date" type="date" required id="start_date" />
-                        <x-forms.input label="Agreed Date" name="agreed_date" type="date" required id="agreed_date" />
+                        <x-forms.input label=" {{ __('messages.Start Date', [], session('lang','en')) }}" name="start_date" type="date" required id="start_date" />
+                        <x-forms.input label=" {{ __('messages.Agreed Date', [], session('lang','en')) }}" name="agreed_date" type="date" required id="agreed_date" />
 
                         <div class="text-center py-4">
-                            <x-forms.button type="submit">Create Sale</x-forms.button>
+                            <x-forms.button type="submit"> {{ __('messages.Register Sale', [], session('lang','en')) }}</x-forms.button>
                         </div>
                     </div>
                 </x-forms.form>
 
                 <div class="ml-4 mb-4">
-                    <x-action-button href="/sales">Sale's List</x-action-button>
+                    <x-action-button href="/sales"> {{ __('messages.Sales list', [], session('lang','en')) }}</x-action-button>
                 </div>
             </div>
         </div>
@@ -180,14 +179,14 @@
             newRow.innerHTML = `
                 <div class="flex space-x-4">
                     <x-forms.select
-                        label="Medication"
+                        label="{{ __('messages.Medication', [], session('lang','en')) }}"
                         name="medications[${newRowIndex}][id]"
                         :options="$medications"
                         required
                         class="medication-select"
                     />
                     <x-forms.input
-                        label="Quantity"
+                        label="{{ __('messages.Quantity', [], session('lang','en')) }}"
                         name="medications[${newRowIndex}][quantity]"
                         type="number"
                         min="1"
@@ -205,7 +204,7 @@
                         type="button"
                         class="remove-medication-btn mt-8"
                     >
-                        Remove
+                        {{ __('messages.Remove', [], session('lang','en')) }}
                     </x-danger-button>
                 </div>
             `;

@@ -41,30 +41,43 @@
                                     <strong>{{ __('messages.Quantity per unit', [], session('lang','en')) }}:</strong>
                                     {{ $supply->pivot->quantity_per_unit }}
                                     {{ $supply->unit_code }}
+                                    |
+                                    <strong>{{ __('messages.Price U$D', [], session('lang','en')) }}:</strong>
+                                    {{ $supply->price * $supply->pivot->quantity_per_unit }}
                                 </a>
                             </li>
                         </div>
                     @endforeach
                 </ul>
 
+                <div class="flex justify-center items-center">
+                    <span class="dark:text-white p-4 font-bold text-xl bg-gray-700 rounded-md">
+                        Total {{ __('messages.Price U$D', [], session('lang','en')) }}: {{ $unit_cost }}
+                    </span>
+                </div>
+
+
                 <x-forms.divider/>
 
                 <h1 class="dark:text-white mx-8 mt-4 font-bold text-xl">
                     {{ $medication->name }}'s {{ __('messages.Sales', [], session('lang','en')) }}
                 </h1>
-                <ul>
-                    @foreach($medication->sales ?? [] as $sale)
-                        <div class="dark:bg-gray-700 bg-gray-100 mx-5 p-4 rounded-md mb-4">
-                            <li class="dark:text-white text-lg mx-8 mt-4 text-blue-800">
-                                <a href="/sales/{{ $sale->id }}">
-                                    <strong>• {{ __('messages.ID', [], session('lang','en')) }}:</strong> {{ $sale->id }}
-                                    | <strong>{{ __('messages.Client', [], session('lang','en')) }}:</strong> {{ $sale->client->name }}
-                                    | <strong>{{ __('messages.Quantity', [], session('lang','en')) }}:</strong>  {{ $sale->pivot->quantity }} {{ __('messages.units', [], session('lang','en')) }}
-                                    | <strong>{{ __('messages.Total', [], session('lang','en')) }}:</strong>  {{ $sale->total }} U$D
-                                </a>
-                            </li>
-                        </div>
-                    @endforeach
+
+                <ul class="mx-5 mt-4 space-y-4">
+                    @forelse($medication->sales as $sale)
+                        <li class="dark:bg-gray-700 bg-gray-100 p-4 rounded-md">
+                            <a class="dark:text-white text-lg text-blue-800" href="/sales/{{ $sale->id }}">
+                                <strong>• {{ __('messages.ID', [], session('lang','en')) }}:</strong> {{ $sale->id }}
+                                | <strong>{{ __('messages.Client', [], session('lang','en')) }}:</strong> {{ $sale->client->name }}
+                                | <strong>{{ __('messages.Quantity', [], session('lang','en')) }}:</strong>  {{ $sale->pivot->quantity }} {{ __('messages.units', [], session('lang','en')) }}
+                                | <strong>{{ __('messages.Total', [], session('lang','en')) }}:</strong>  {{ $sale->total }} U$D
+                            </a>
+                        </li>
+                    @empty
+                        <li class="dark:text-white mx-8 mt-4">
+                            {{ __('messages.No sales found', [], session('lang','en')) }}
+                        </li>
+                    @endforelse
                 </ul>
 
                 <x-forms.divider/>

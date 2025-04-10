@@ -16,8 +16,10 @@ class ProductionOrder extends Model
         'batch',
         'sale_id',
         'start_date',
+        'original_start_date',
         'end_date',
-        'production_line_id',
+        'original_end_date',
+        'production_line_id'
     ];
 
     public function medications()

@@ -47,10 +47,10 @@ Route::delete('/services/{service}', [ServiceController::class, 'destroy']);
 Route::post('/services', [ServiceController::class, 'store']);
 
 Route::get('/sales', [SaleController::class, 'index']);
+Route::post('/sales', [SaleController::class, 'store']);
 Route::get('/sales/create', [SaleController::class, 'create']);
 Route::get('/sales/{sale}', [SaleController::class, 'show']);
 Route::delete('/sales/{sale}', [SaleController::class, 'destroy']);
-Route::post('/sales', [SaleController::class, 'store']);
 
 Route::get('/supplies', [SupplyController::class, 'index']);
 Route::get('/supplies/create', [SupplyController::class, 'create']);
@@ -59,13 +59,11 @@ Route::delete('/supplies/{supply}', [SupplyController::class, 'destroy']);
 Route::post('/supplies', [SupplyController::class, 'store']);
 
 Route::get('/production/order/{order}', [ProductionOrderController::class, 'show']);
-Route::put('/production/order/{order}', [ProductionOrderController::class, 'updateState']);
-//Route::put('/production/order/{order}', [ProductionOrderController::class, 'pay']);
+Route::put('/production/order/{order}', [ProductionOrderController::class, 'update']);
 Route::get('/production/{month?}/{year?}', [ProductionCalendarController::class, 'index'])->name('production');
 
 Route::get('/lines', [ProductionLineController::class, 'index']);
 Route::get('/lines/{line}', [ProductionLineController::class, 'show']);
-// routes/web.php
 Route::post('/lines/{line}/employees', [ProductionLineController::class, 'addEmployee']);
 Route::delete('/lines/{line}/employees/{employee}', [ProductionLineController::class, 'removeEmployee']);
 

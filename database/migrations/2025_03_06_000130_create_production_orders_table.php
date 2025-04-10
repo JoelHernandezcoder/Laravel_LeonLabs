@@ -17,7 +17,9 @@ class CreateProductionOrdersTable extends Migration
             $table->foreign('production_line_id')->references('id')->on('production_lines')->onDelete('restrict');
             $table->tinyInteger('state')->default(1);
             $table->date('end_date');
+            $table->date('original_end_date')->nullable();
             $table->date('start_date');
+            $table->date('original_start_date')->nullable();
             $table->timestamps();
         });
     }
@@ -27,4 +29,3 @@ class CreateProductionOrdersTable extends Migration
         Schema::dropIfExists('production_orders');
     }
 }
-

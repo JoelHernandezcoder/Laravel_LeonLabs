@@ -1,18 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Sales
+            {{ __('messages.Sales', [], session('lang','en')) }}
         </h2>
     </x-slot>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-4">
-                <h1 class="dark:text-white font-bold text-xl mb-4">List</h1>
+                <h1 class="dark:text-white font-bold text-xl mb-4">{{ __('messages.List', [], session('lang','en')) }}</h1>
                 <table class="w-full text-left border-collapse">
                     <thead>
                     <tr class="border-b">
                         <th class="p-2 dark:text-white">ID</th>
-                        <th class="p-2 dark:text-white">Client</th>
+                        <th class="p-2 dark:text-white">{{ __('messages.Client', [], session('lang','en')) }}</th>
                         <th class="p-2 dark:text-white">Total U$D</th>
 {{--                        <th class="p-2 dark:text-white">Delivery Waiting Time</th>--}}
                     </tr>
@@ -34,7 +34,7 @@
                    {{$sales->links()}}
                 </div>
                 <div class="text-center mt-4">
-                    <x-action-button href="/sales/create">Register Sale</x-action-button>
+                    <x-action-button href="/sales/create">{{ __('messages.Register Sale', [], session('lang','en')) }}</x-action-button>
                 </div>
             </div>
 

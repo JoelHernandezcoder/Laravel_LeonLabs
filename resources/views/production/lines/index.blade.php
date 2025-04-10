@@ -8,6 +8,7 @@
     <div class="py-4">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-4">
+
                 <h1 class="dark:text-white font-bold text-xl mb-4">
                     {{ __('messages.List', [], session('lang','en')) }}
                 </h1>
@@ -20,7 +21,7 @@
                     </div>
                 @endforeach
 
-                <div class="mt-4">
+                <div class="mt-8">
                     <x-action-button href="/production">
                         {{ __('messages.Production Orders', [], session('lang','en')) }}
                     </x-action-button>
